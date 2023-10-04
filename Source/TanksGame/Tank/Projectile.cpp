@@ -2,6 +2,8 @@
 
 
 #include "Projectile.h"
+#include "Tank.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -15,6 +17,12 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
+	auto shapeComponent = FindComponentByClass<UCapsuleComponent>(); //Type de composant de collision
+	if (shapeComponent == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("NULL"));
+		return;
+	}
+	shapeComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OverlapBegin);
 	
 }
 
@@ -22,6 +30,20 @@ void AProjectile::BeginPlay()
 void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	FVector position = GetActorLocation();
+	FVector forward = GetActorForwardVector();
+	SetActorLocation(position + forward * Speed * DeltaTime);
+}
 
+void AProjectile::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
+	if (ATank* tank = Cast<ATank>(OtherActor)) {
+		for (const auto& tag : TargetTags) {
+			if (tank->Tags.Contains(tag) == true) {
+				tank->TakeHit(Damage);
+				Destroy();
+				return;
+			}
+		}
+	}
 }
 

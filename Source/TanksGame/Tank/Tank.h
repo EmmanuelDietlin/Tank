@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
 #include "Tank.generated.h"
@@ -26,6 +27,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	void TakeHit(int damage);
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Inputs")
@@ -43,8 +45,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Inputs")
 	float RotationSpeed;
 
+	UPROPERTY(EditAnywhere, Category = "Tank")
+	int MaxHP = 10 UMETA(ClampMin = "1");
+
+
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
+	class UStaticMeshComponent* ProjectileSpawnPoint = nullptr;
+	float fireTimer = 0;
+	int CurrentHP;
 
 
 };

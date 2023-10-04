@@ -7,7 +7,7 @@
 
 APlayerTank::APlayerTank() 
 {
-	PrimaryActorTick.bCanEverTick = true;
+
 }
 
 void APlayerTank::BeginPlay() 
@@ -17,11 +17,17 @@ void APlayerTank::BeginPlay()
 	if (Turret == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Null ref to turret"));
 	}
+
+	ProjectileSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("ProjectileSpawnPoint")));
+	if (ProjectileSpawnPoint == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to projectile spawn point"));
+	}
 }
 
 void APlayerTank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (fireTimer > 0) fireTimer -= DeltaTime;
 }
 
 void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) 
@@ -52,8 +58,21 @@ void APlayerTank::Move(const FInputActionValue& value) {
 	AddControllerYawInput(vector.X * RotationSpeed * 2 * PI / 360);
 }
 
-void APlayerTank::Fire(const FInputActionValue& value) {
+void APlayerTank::Fire(const FInputActionValue& value) 
+{
+	if (fireTimer > 0) return;
+	fireTimer = (float)1 / FireRate;
+	UWorld* world = GetWorld();
+	if (world == nullptr) return;
+	if (ProjectileSpawnPoint == nullptr) return;
 
+	UE_LOG(LogTemp, Warning, TEXT("Fire Projectile"));
+	AProjectile* bullet = Cast<AProjectile>(world->SpawnActor(Projectile));
+	bullet->SetActorLocationAndRotation(
+		ProjectileSpawnPoint->GetComponentLocation(),
+		Turret->GetComponentQuat());
+	bullet->Speed = ProjectileSpeed;
+	bullet->TargetTags = EnemyTags;
 }
 
 void APlayerTank::PlaceMine(const FInputActionValue& value) {

@@ -27,7 +27,6 @@ protected:
 
 private:
 	void Move(const FInputActionValue& value);
-	void RotateTurret(const FInputActionValue& value);
 	void Fire(const FInputActionValue& value);
 	void PlaceMine(const FInputActionValue& value);
 
@@ -41,5 +40,17 @@ public:
 public:
 	UPROPERTY(EditAnywhere, Category = "Inputs")
 	class UInputMappingContext* Context;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	TSubclassOf<AProjectile> Projectile;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	float FireRate = 1;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	float ProjectileSpeed = 1 UMETA(ClampMin = "0");
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	TArray<FString> EnemyTags = { "Enemy" };
 	
 };
