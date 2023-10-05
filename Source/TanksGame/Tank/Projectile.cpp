@@ -37,9 +37,14 @@ void AProjectile::Tick(float DeltaTime)
 
 void AProjectile::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	if (ATank* tank = Cast<ATank>(OtherActor)) {
+		UE_LOG(LogTemp, Warning, TEXT("HIT Target"));
 		for (const auto& tag : TargetTags) {
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *tag);
+			if (tank->Tags.Num() > 0) 
+				UE_LOG(LogTemp, Warning, TEXT("%S"), tank->Tags[0]);
 			if (tank->Tags.Contains(tag) == true) {
-				tank->TakeHit(Damage);
+				UE_LOG(LogTemp, Warning, TEXT("DEstroyed"));
+				tank->TakeHit();
 				Destroy();
 				return;
 			}

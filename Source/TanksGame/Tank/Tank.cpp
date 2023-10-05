@@ -8,8 +8,6 @@ ATank::ATank()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	CurrentHP = MaxHP;
-
 }
 
 // Called when the game starts or when spawned
@@ -32,12 +30,9 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ATank::TakeHit(int damage)
+void ATank::TakeHit()
 {
-	CurrentHP -= damage;
-	if (CurrentHP <= 0) {
-		UE_LOG(LogTemp, Warning, TEXT("Tank destroyed"));
-		Destroy();
-	}
+	UE_LOG(LogTemp, Warning, TEXT("Tank destroyed"));
+	Destroy();
 }
 

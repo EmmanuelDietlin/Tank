@@ -27,7 +27,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	void TakeHit(int damage);
+	void TakeHit();
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Inputs")
@@ -39,21 +39,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Inputs")
 	class UInputAction* PlaceMineAction;
 
-	UPROPERTY(EditAnywhere, Category = "Inputs")
-	float ForwardSpeed;
-
-	UPROPERTY(EditAnywhere, Category = "Inputs")
-	float RotationSpeed;
-
-	UPROPERTY(EditAnywhere, Category = "Tank")
-	int MaxHP = 10 UMETA(ClampMin = "1");
-
 
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
 	class UStaticMeshComponent* ProjectileSpawnPoint = nullptr;
 	float fireTimer = 0;
-	int CurrentHP;
-
 
 };

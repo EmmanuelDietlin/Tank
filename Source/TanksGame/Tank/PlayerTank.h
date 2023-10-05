@@ -50,6 +50,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	float ProjectileSpeed = 1 UMETA(ClampMin = "0");
 
+	UPROPERTY(EditAnywhere, Category = "Inputs")
+	float ForwardSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Inputs")
+	float RotationSpeed;
+
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Inputs")
+	float TurretRotationSpeed;
+
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	TArray<FString> EnemyTags = { "Enemy" };
 	

@@ -2,8 +2,8 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
 #include "TanksData.h"
+#include "CoreMinimal.h"
 #include "Tank.h"
 #include "EnemyTank.generated.h"
 

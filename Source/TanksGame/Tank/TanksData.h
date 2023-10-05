@@ -7,9 +7,6 @@
 #include "Engine/DataAsset.h"
 #include "TanksData.generated.h"
 
-/**
- * 
- */
 USTRUCT()
 struct FTankData {
 	GENERATED_BODY()
