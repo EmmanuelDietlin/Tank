@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Tank.h"
+#include "Mine.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "EnhancedInputSubsystems.h"
@@ -44,8 +45,20 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	TSubclassOf<AProjectile> Projectile;
 
+	UPROPERTY(EditAnywhere, Category = "Mine")
+	TSubclassOf<AMine> Mine;
+
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	float FireRate = 1;
+
+	UPROPERTY(EditAnywhere, Category = "Mine")
+	float MinePlaceDelay = 1;
+
+	UPROPERTY(EditAnywhere, Category = "Mine")
+	float MineExplosionDelay = 1;
+
+	UPROPERTY(EditAnywhere, Category = "Mine")
+	float MineExplosionRadius = 100;
 
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	float ProjectileSpeed = 1 UMETA(ClampMin = "0");

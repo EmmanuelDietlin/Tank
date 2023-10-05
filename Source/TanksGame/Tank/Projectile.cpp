@@ -23,6 +23,7 @@ void AProjectile::BeginPlay()
 		return;
 	}
 	shapeComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OverlapBegin);
+	shapeComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 	
 }
 
@@ -32,18 +33,17 @@ void AProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	FVector position = GetActorLocation();
 	FVector forward = GetActorForwardVector();
-	SetActorLocation(position + forward * Speed * DeltaTime);
+	FHitResult* hit = nullptr;
+	SetActorLocation(position + forward * Speed * DeltaTime, true, hit);
+	if (hit == nullptr) return;
+	UE_LOG(LogTemp, Warning, TEXT("Hit : %s"), *hit->ToString());
 }
 
 void AProjectile::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	if (ATank* tank = Cast<ATank>(OtherActor)) {
-		UE_LOG(LogTemp, Warning, TEXT("HIT Target"));
 		for (const auto& tag : TargetTags) {
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *tag);
-			if (tank->Tags.Num() > 0) 
-				UE_LOG(LogTemp, Warning, TEXT("%S"), tank->Tags[0]);
 			if (tank->Tags.Contains(tag) == true) {
-				UE_LOG(LogTemp, Warning, TEXT("DEstroyed"));
 				tank->TakeHit();
 				Destroy();
 				return;
@@ -51,4 +51,11 @@ void AProjectile::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor*
 		}
 	}
 }
+
+void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) 
+{
+
+}
+
+
 

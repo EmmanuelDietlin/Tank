@@ -22,12 +22,18 @@ void APlayerTank::BeginPlay()
 	if (ProjectileSpawnPoint == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Null ref to projectile spawn point"));
 	}
+
+	MineSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("MineSpawnPoint")));
+	if (MineSpawnPoint == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to mine spawn point"));
+	}
 }
 
 void APlayerTank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	if (fireTimer > 0) fireTimer -= DeltaTime;
+	if (minePlaceTimer > 0) minePlaceTimer -= DeltaTime;
 }
 
 void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) 
@@ -75,6 +81,18 @@ void APlayerTank::Fire(const FInputActionValue& value)
 	bullet->TargetTags = EnemyTags;
 }
 
-void APlayerTank::PlaceMine(const FInputActionValue& value) {
+void APlayerTank::PlaceMine(const FInputActionValue& value) 
+{
+	if (minePlaceTimer > 0) return;
+	minePlaceTimer = MinePlaceDelay;
+	UWorld* world = GetWorld();
+	if (world == nullptr) return;
+	if (MineSpawnPoint == nullptr) return;
 
+	UE_LOG(LogTemp, Warning, TEXT("Place Mine"));
+	AMine* mine = Cast<AMine>(world->SpawnActor(Mine));
+	mine->SetActorLocation(MineSpawnPoint->GetComponentLocation());
+	mine->MineExplosionDelay = MineExplosionDelay;
+	mine->EnemyTags = EnemyTags;
+	mine->ExplosionRadius = MineExplosionRadius;
 }

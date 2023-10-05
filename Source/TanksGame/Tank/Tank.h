@@ -27,6 +27,7 @@ public:
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	UFUNCTION(BlueprintCallable)
 	void TakeHit();
 
 public:
@@ -43,6 +44,8 @@ public:
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
 	class UStaticMeshComponent* ProjectileSpawnPoint = nullptr;
+	class UStaticMeshComponent* MineSpawnPoint = nullptr;
 	float fireTimer = 0;
+	float minePlaceTimer = 0;
 
 };
