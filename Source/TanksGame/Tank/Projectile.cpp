@@ -3,7 +3,7 @@
 
 #include "Projectile.h"
 #include "Tank.h"
-#include "Components/CapsuleComponent.h"
+#include "Components/SphereComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -17,7 +17,7 @@ AProjectile::AProjectile()
 void AProjectile::BeginPlay()
 {
 	Super::BeginPlay();
-	auto shapeComponent = FindComponentByClass<UCapsuleComponent>(); //Type de composant de collision
+	auto shapeComponent = FindComponentByClass<USphereComponent>(); 
 	if (shapeComponent == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("NULL"));
 		return;
@@ -33,10 +33,13 @@ void AProjectile::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	FVector position = GetActorLocation();
 	FVector forward = GetActorForwardVector();
+	auto shapeComponent = FindComponentByClass<USphereComponent>();
 	FHitResult* hit = nullptr;
 	SetActorLocation(position + forward * Speed * DeltaTime, true, hit);
+	if (Bounces < 0) Destroy();
 	if (hit == nullptr) return;
 	UE_LOG(LogTemp, Warning, TEXT("Hit : %s"), *hit->ToString());
+	
 }
 
 void AProjectile::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {

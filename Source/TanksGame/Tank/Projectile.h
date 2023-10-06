@@ -31,7 +31,9 @@ public:
 	UPROPERTY(BlueprintReadonly)
 	float Speed = 10;
 	int Damage = 1;
+	UPROPERTY(BlueprintReadWrite)
 	int Bounces = 1;
+	UPROPERTY(BlueprintReadonly)
 	TArray<FString> TargetTags = {"Enemy"};
 
 };
