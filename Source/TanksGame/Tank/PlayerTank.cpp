@@ -86,13 +86,17 @@ void APlayerTank::PlaceMine(const FInputActionValue& value)
 	if (minePlaceTimer > 0) return;
 	minePlaceTimer = MinePlaceDelay;
 	UWorld* world = GetWorld();
+
 	if (world == nullptr) return;
 	if (MineSpawnPoint == nullptr) return;
+	if (MineData == nullptr) return;
+	if (MineData->Mines.Contains(MineType) == false) return;
+	if (MineData->Mines[MineType].Mine == nullptr) return;
 
 	UE_LOG(LogTemp, Warning, TEXT("Place Mine"));
-	AMine* mine = Cast<AMine>(world->SpawnActor(Mine));
+	AMine* mine = Cast<AMine>(world->SpawnActor(MineData->Mines[MineType].Mine));
 	mine->SetActorLocation(MineSpawnPoint->GetComponentLocation());
-	mine->MineExplosionDelay = MineExplosionDelay;
+	mine->MineExplosionDelay = MineData->Mines[MineType].MineExplosionDelay;
 	mine->EnemyTags = EnemyTags;
-	mine->ExplosionRadius = MineExplosionRadius;
+	mine->ExplosionRadius = MineData->Mines[MineType].MineExplosionRadius;
 }

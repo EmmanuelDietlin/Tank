@@ -2,6 +2,7 @@
 
 
 #include "Mine.h"
+#include "Tank.h"
 #include "Components/SphereComponent.h"
 
 // Sets default values

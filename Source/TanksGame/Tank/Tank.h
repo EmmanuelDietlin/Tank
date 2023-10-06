@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Projectile.h"
+#include "MinesData.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
 #include "Tank.generated.h"
@@ -39,6 +40,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Inputs")
 	class UInputAction* PlaceMineAction;
+
+	UPROPERTY(EditAnywhere, Category = "Mine")
+	UMinesData* MineData;
+
+	UPROPERTY(EditAnywhere, Category = "Mine")
+	TEnumAsByte<MineTypes> MineType = MineTypes::StandardMine;
 
 
 protected:

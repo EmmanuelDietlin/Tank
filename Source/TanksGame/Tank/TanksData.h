@@ -7,6 +7,14 @@
 #include "Engine/DataAsset.h"
 #include "TanksData.generated.h"
 
+UENUM()
+enum TankTypes {
+	BasicTank UMETA(DisplayName = "BasicTank"),
+	MineTank UMETA(DisplayName = "MineTank"),
+	FastTank UMETA(DisplayName = "FastTank"),
+	FireTank UMETA(DisplayName = "FireTank")
+};
+
 USTRUCT()
 struct FTankData {
 	GENERATED_BODY()
@@ -29,6 +37,9 @@ struct FTankData {
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	float FireRate = 1;
 
+	UPROPERTY(EditAnywhere, Category = "Mine")
+	float MinePlaceDelay = 1;
+
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	TArray<FString> EnemyTags = { "Player" };
 };
@@ -40,15 +51,7 @@ class TANKSGAME_API UTanksData : public UDataAsset
 
 public:
 	UPROPERTY(EditAnywhere)
-	TArray<FTankData> TanksData;
-};
-
-UENUM()
-enum TankTypes {
-	BasicTank UMETA(DisplayName = "BasicTank"),
-	MineTank UMETA(DisplayName = "MineTank"),
-	FastTank UMETA(DisplayName = "FastTank"),
-	FireTank UMETA(DisplayName = "FireTank")
+	TMap<TEnumAsByte<TankTypes>,FTankData> TanksData;
 };
 
 

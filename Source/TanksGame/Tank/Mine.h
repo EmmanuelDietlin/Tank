@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Tank.h"
 #include "Components/SphereComponent.h"
 #include "GameFramework/Actor.h"
 #include "Mine.generated.h"
