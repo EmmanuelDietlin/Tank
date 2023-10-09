@@ -29,6 +29,6 @@ public:
 	TArray<TWeakObjectPtr<AEnemyTank>> EnemyTanks;
 
 	UPROPERTY(EditAnywhere, Category = "Next Level")
-	UWorld* NextLevel;
+	TSoftObjectPtr<UWorld> NextLevel;
 
 };
