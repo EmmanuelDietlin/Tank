@@ -3,6 +3,7 @@
 
 #include "Mine.h"
 #include "Tank.h"
+#include "DestructibleWall.h"
 #include "Components/SphereComponent.h"
 
 // Sets default values
@@ -43,6 +44,9 @@ void AMine::Explode()
 	for (const auto& it : overlappingActors) {
 		if (ATank* tank = Cast<ATank>(it)) {
 			tank->TakeHit();
+		}
+		else if (ADestructibleWall* wall = Cast<ADestructibleWall>(it)) {
+			wall->TakeHit();
 		}
 	}
 	Destroy();

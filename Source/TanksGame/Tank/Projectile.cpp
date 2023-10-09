@@ -37,13 +37,13 @@ void AProjectile::Tick(float DeltaTime)
 	FHitResult* hit = nullptr;
 	SetActorLocation(position + forward * Speed * DeltaTime, true, hit);
 	if (Bounces < 0) Destroy();
-	if (hit == nullptr) return;
-	UE_LOG(LogTemp, Warning, TEXT("Hit : %s"), *hit->ToString());
+	/*if (hit == nullptr) return;
+	UE_LOG(LogTemp, Warning, TEXT("Hit : %s"), *hit->ToString());*/
 	
 }
 
 void AProjectile::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
-	if (ATank* tank = Cast<ATank>(OtherActor)) {
+	/*if (ATank* tank = Cast<ATank>(OtherActor)) {
 		for (const auto& tag : TargetTags) {
 			UE_LOG(LogTemp, Warning, TEXT("%s"), *tag);
 			if (tank->Tags.Contains(tag) == true) {
@@ -52,7 +52,7 @@ void AProjectile::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor*
 				return;
 			}
 		}
-	}
+	}*/
 }
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit) 

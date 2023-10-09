@@ -33,6 +33,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ATank::TakeHit()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Tank destroyed"));
-	Destroy();
+	bool e = Destroy();
+	UE_LOG(LogTemp, Warning, TEXT("Destroyed ? : %s"), e ? TEXT("True") : TEXT("False"));
 }
 

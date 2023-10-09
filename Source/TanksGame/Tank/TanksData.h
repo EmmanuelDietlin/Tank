@@ -34,6 +34,9 @@ struct FTankData {
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	TSubclassOf<AProjectile> Projectile;
 
+	UPROPERTY(EditAnywhere, Category = "Tank")
+	float TurretRotationSpeed = 30;
+
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	float FireRate = 1;
 
