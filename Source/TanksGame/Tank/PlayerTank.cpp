@@ -2,6 +2,8 @@
 
 
 #include "PlayerTank.h"
+#include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 
 
 
@@ -27,6 +29,11 @@ void APlayerTank::BeginPlay()
 	if (MineSpawnPoint == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Null ref to mine spawn point"));
 	}
+
+	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
+	if (PlayerController == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref for player controller"));
+	}
 }
 
 void APlayerTank::Tick(float DeltaTime)
@@ -34,6 +41,23 @@ void APlayerTank::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (fireTimer > 0) fireTimer -= DeltaTime;
 	if (minePlaceTimer > 0) minePlaceTimer -= DeltaTime;
+	if (PlayerController == nullptr) return;
+	if (Turret == nullptr) return;
+
+	FHitResult hitResult;
+	if (PlayerController->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult) == false) {
+		return;
+	}
+	if (MousePosition != hitResult.Location) {
+		MousePosition = hitResult.Location;
+	}
+	FVector turretWorldLoc = Turret->GetComponentLocation();
+	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(turretWorldLoc, MousePosition);
+	FRotator turretRotation = UKismetMathLibrary::RInterpTo_Constant(Turret->GetComponentRotation(), targetRotation, DeltaTime, TurretRotationSpeed);
+	turretRotation.SetComponentForAxis(EAxis::X, 0);
+	turretRotation.SetComponentForAxis(EAxis::Y, 0);
+	Turret->SetWorldRotation(turretRotation);
+
 }
 
 void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) 

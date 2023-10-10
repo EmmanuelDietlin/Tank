@@ -30,6 +30,10 @@ private:
 	void Fire(const FInputActionValue& value);
 	void PlaceMine(const FInputActionValue& value);
 
+	APlayerController* PlayerController;
+	FVector MousePosition;
+
+
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -29,8 +29,12 @@ void ALevelManager::Tick(float DeltaTime)
 		}
 	}
 	if (remainingTanks == 0) {
-		UE_LOG(LogTemp, Warning, TEXT("nbr : %d"), remainingTanks);
-		UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
+		if (IsLastLevel == false) {
+			UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
+		}
+		else {
+			OnVictoryDelegate.Broadcast();
+		}
 	}
 }
 

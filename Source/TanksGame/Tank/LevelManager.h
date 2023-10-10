@@ -4,8 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "EnemyTank.h"
+#include "TankSaveGame.h"
 #include "GameFramework/Actor.h"
 #include "LevelManager.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVictoryDelegate);
 
 UCLASS()
 class TANKSGAME_API ALevelManager : public AActor
@@ -15,6 +18,8 @@ class TANKSGAME_API ALevelManager : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ALevelManager();
+
+private:
 
 protected:
 	// Called when the game starts or when spawned
@@ -30,5 +35,11 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Next Level")
 	TSoftObjectPtr<UWorld> NextLevel;
+
+	UPROPERTY(BlueprintAssignable, Category = "Test")
+	FVictoryDelegate OnVictoryDelegate;
+
+	UPROPERTY(EditAnywhere, Category = "Next Level")
+	bool IsLastLevel = false;
 
 };
