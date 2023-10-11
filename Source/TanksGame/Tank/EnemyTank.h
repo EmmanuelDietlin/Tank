@@ -29,10 +29,16 @@ protected:
 	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 
 public:
+	UFUNCTION(BlueprintCallable)
 	void Fire();
+	UFUNCTION(BlueprintCallable)
 	void PlaceMine();
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(BlueprintCallable)
+	FRotator GetTurretRotation();
+	UFUNCTION(BlueprintCallable)
+	void RotateTurret(FRotator TargetRotation, double DeltaTime);
 
 private:
 	UTankGameInstance* TankGameInstance;

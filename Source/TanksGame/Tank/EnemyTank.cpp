@@ -2,6 +2,7 @@
 
 
 #include "EnemyTank.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void AEnemyTank::BeginPlay() {
 	Super::BeginPlay();
@@ -13,6 +14,19 @@ void AEnemyTank::BeginPlay() {
 	TankGameInstance = Cast<UTankGameInstance>(instance);
 	if (TankGameInstance == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Game instance is not of type UTankGameInstance"));
+	}
+	Turret = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("TurretElement")));
+	if (Turret == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to turret"));
+	}
+	ProjectileSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("ProjectileSpawnPoint")));
+	if (ProjectileSpawnPoint == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to projectile spawn point"));
+	}
+
+	MineSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("MineSpawnPoint")));
+	if (MineSpawnPoint == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to mine spawn point"));
 	}
 }
 
@@ -64,5 +78,25 @@ void AEnemyTank::PlaceMine()
 	mine->MineExplosionDelay = MineData->Mines[MineType].MineExplosionDelay;
 	mine->EnemyTags = TanksData->TanksData[TankType].EnemyTags;
 	mine->ExplosionRadius = MineData->Mines[MineType].MineExplosionRadius;
+}
+
+FRotator AEnemyTank::GetTurretRotation() {
+	if (Turret == nullptr) return FRotator::ZeroRotator;
+	return Turret->GetComponentRotation();
+}
+
+void AEnemyTank::RotateTurret(FRotator TargetRotation, double DeltaTime) {
+	if (Turret == nullptr) return;
+	if (TanksData == nullptr || TanksData->TanksData.Contains(TankType) == false) return;
+	FRotator turretRotation = UKismetMathLibrary::RInterpTo_Constant(
+		Turret->GetComponentRotation(), 
+		TargetRotation, 
+		DeltaTime, 
+		TanksData->TanksData[TankType].TurretRotationSpeed);
+	turretRotation.SetComponentForAxis(EAxis::X, 0);
+	turretRotation.SetComponentForAxis(EAxis::Y, 0);
+	UE_LOG(LogTemp, Warning, TEXT("Target rotation : %f, %f, %f"), TargetRotation.Roll, TargetRotation.Pitch, TargetRotation.Yaw);
+	UE_LOG(LogTemp, Warning, TEXT("Turret rotation : %f, %f, %f"), Turret->GetComponentRotation().Roll, Turret->GetComponentRotation().Pitch, Turret->GetComponentRotation().Yaw);
+	Turret->SetWorldRotation(turretRotation);
 }
  
