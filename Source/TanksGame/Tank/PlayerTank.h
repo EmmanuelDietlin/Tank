@@ -29,6 +29,10 @@ private:
 	void Move(const FInputActionValue& value);
 	void Fire(const FInputActionValue& value);
 	void PlaceMine(const FInputActionValue& value);
+	UFUNCTION()
+	void ProjectileDestroyed(AActor* DestroyedActor);
+	UFUNCTION()
+	void MineDestroyed(AActor* DestroyedActor);
 
 	APlayerController* PlayerController;
 	FVector MousePosition;
@@ -62,6 +66,12 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Inputs")
 	float RotationSpeed;
+
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	int MaxProjectileCount = 1;
+
+	UPROPERTY(EditAnywhere, Category = "Mine")
+	int MaxMineCount = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Inputs")
 	float TurretRotationSpeed;

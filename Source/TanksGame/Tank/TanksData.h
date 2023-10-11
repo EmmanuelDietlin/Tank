@@ -40,6 +40,12 @@ struct FTankData {
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	float FireRate = 1;
 
+	UPROPERTY(EditAnywhere, Category = "Projectile")
+	int MaxProjectileCount = 1;
+
+	UPROPERTY(EditAnywhere, Category = "Mine")
+	int MaxMineCount = 1;
+
 	UPROPERTY(EditAnywhere, Category = "Mine")
 	float MinePlaceDelay = 1;
 

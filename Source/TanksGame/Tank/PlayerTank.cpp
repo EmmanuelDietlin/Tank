@@ -90,7 +90,7 @@ void APlayerTank::Move(const FInputActionValue& value) {
 
 void APlayerTank::Fire(const FInputActionValue& value) 
 {
-	if (fireTimer > 0) return;
+	if (fireTimer > 0 || ProjectileCount >= MaxProjectileCount) return;
 	fireTimer = (float)1 / FireRate;
 	UWorld* world = GetWorld();
 	if (world == nullptr) return;
@@ -103,11 +103,13 @@ void APlayerTank::Fire(const FInputActionValue& value)
 		Turret->GetComponentQuat());
 	bullet->Speed = ProjectileSpeed;
 	bullet->TargetTags = EnemyTags;
+	bullet->OnDestroyed.AddDynamic(this, &APlayerTank::ProjectileDestroyed);
+	ProjectileCount++;
 }
 
 void APlayerTank::PlaceMine(const FInputActionValue& value) 
 {
-	if (minePlaceTimer > 0) return;
+	if (minePlaceTimer > 0 || MineCount >= MaxMineCount) return;
 	minePlaceTimer = MinePlaceDelay;
 	UWorld* world = GetWorld();
 
@@ -123,4 +125,14 @@ void APlayerTank::PlaceMine(const FInputActionValue& value)
 	mine->MineExplosionDelay = MineData->Mines[MineType].MineExplosionDelay;
 	mine->EnemyTags = EnemyTags;
 	mine->ExplosionRadius = MineData->Mines[MineType].MineExplosionRadius;
+	mine->OnDestroyed.AddDynamic(this, &APlayerTank::MineDestroyed);
+	MineCount++;
+}
+
+void APlayerTank::ProjectileDestroyed(AActor* DestroyedActor) {
+	ProjectileCount--;
+}
+
+void APlayerTank::MineDestroyed(AActor* DestroyedActor) {
+	MineCount--;
 }

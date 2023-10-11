@@ -36,7 +36,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Next Level")
 	TSoftObjectPtr<UWorld> NextLevel;
 
-	UPROPERTY(BlueprintAssignable, Category = "Test")
+	UPROPERTY(BlueprintAssignable)
 	FVictoryDelegate OnVictoryDelegate;
 
 	UPROPERTY(EditAnywhere, Category = "Next Level")

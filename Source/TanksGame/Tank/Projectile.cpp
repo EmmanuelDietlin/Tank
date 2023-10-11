@@ -36,7 +36,9 @@ void AProjectile::Tick(float DeltaTime)
 	auto shapeComponent = FindComponentByClass<USphereComponent>();
 	FHitResult* hit = nullptr;
 	SetActorLocation(position + forward * Speed * DeltaTime, true, hit);
-	if (Bounces < 0) Destroy();
+	if (Bounces < 0) {
+		Destroy();
+	}
 	/*if (hit == nullptr) return;
 	UE_LOG(LogTemp, Warning, TEXT("Hit : %s"), *hit->ToString());*/
 	

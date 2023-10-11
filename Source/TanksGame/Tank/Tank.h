@@ -54,5 +54,7 @@ protected:
 	class UStaticMeshComponent* MineSpawnPoint = nullptr;
 	float fireTimer = 0;
 	float minePlaceTimer = 0;
+	int ProjectileCount = 0;
+	int MineCount = 0;
 
 };
