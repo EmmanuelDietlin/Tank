@@ -15,19 +15,6 @@ void AEnemyTank::BeginPlay() {
 	if (TankGameInstance == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Game instance is not of type UTankGameInstance"));
 	}
-	Turret = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("TurretElement")));
-	if (Turret == nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("Null ref to turret"));
-	}
-	ProjectileSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("ProjectileSpawnPoint")));
-	if (ProjectileSpawnPoint == nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("Null ref to projectile spawn point"));
-	}
-
-	MineSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("MineSpawnPoint")));
-	if (MineSpawnPoint == nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("Null ref to mine spawn point"));
-	}
 }
 
 void AEnemyTank::EndPlay(const EEndPlayReason::Type Reason)
@@ -43,20 +30,21 @@ void AEnemyTank::Tick(float DeltaTime) {
 
 void AEnemyTank::Fire()
 {
-	if (fireTimer > 0) return;
 	if (TanksData == nullptr || TanksData->TanksData.Contains(TankType) == false) return;
+	if(fireTimer > 0 || ProjectileCount > TanksData->TanksData[TankType].MaxProjectileCount) return;
 	fireTimer = (float)1 / TanksData->TanksData[TankType].FireRate;
 	UWorld* world = GetWorld();
 	if (world == nullptr) return;
 	if (ProjectileSpawnPoint == nullptr) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("Fire Projectile"));
 	AProjectile* bullet = Cast<AProjectile>(world->SpawnActor(TanksData->TanksData[TankType].Projectile));
 	bullet->SetActorLocationAndRotation(
 		ProjectileSpawnPoint->GetComponentLocation(),
 		Turret->GetComponentQuat());
 	bullet->Speed = TanksData->TanksData[TankType].ProjectileSpeed;
 	bullet->TargetTags = TanksData->TanksData[TankType].EnemyTags;
+	bullet->OnDestroyed.AddDynamic(this, &AEnemyTank::ProjectileDestroyed);
+	ProjectileCount++;
 }
 
 void AEnemyTank::PlaceMine()
@@ -72,12 +60,13 @@ void AEnemyTank::PlaceMine()
 	if (MineData->Mines.Contains(MineType) == false) return;
 	if (MineData->Mines[MineType].Mine == nullptr) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("Place Mine"));
 	AMine* mine = Cast<AMine>(world->SpawnActor(MineData->Mines[MineType].Mine));
 	mine->SetActorLocation(MineSpawnPoint->GetComponentLocation());
 	mine->MineExplosionDelay = MineData->Mines[MineType].MineExplosionDelay;
 	mine->EnemyTags = TanksData->TanksData[TankType].EnemyTags;
 	mine->ExplosionRadius = MineData->Mines[MineType].MineExplosionRadius;
+	mine->OnDestroyed.AddDynamic(this, &AEnemyTank::MineDestroyed);
+	MineCount++;
 }
 
 FRotator AEnemyTank::GetTurretRotation() {
@@ -95,8 +84,6 @@ void AEnemyTank::RotateTurret(FRotator TargetRotation, double DeltaTime) {
 		TanksData->TanksData[TankType].TurretRotationSpeed);
 	turretRotation.SetComponentForAxis(EAxis::X, 0);
 	turretRotation.SetComponentForAxis(EAxis::Y, 0);
-	UE_LOG(LogTemp, Warning, TEXT("Target rotation : %f, %f, %f"), TargetRotation.Roll, TargetRotation.Pitch, TargetRotation.Yaw);
-	UE_LOG(LogTemp, Warning, TEXT("Turret rotation : %f, %f, %f"), Turret->GetComponentRotation().Roll, Turret->GetComponentRotation().Pitch, Turret->GetComponentRotation().Yaw);
 	Turret->SetWorldRotation(turretRotation);
 }
  

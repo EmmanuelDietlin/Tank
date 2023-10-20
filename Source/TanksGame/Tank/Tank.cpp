@@ -14,6 +14,25 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+	Turret = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("TurretElement")));
+	if (Turret == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to turret"));
+	}
+
+	ProjectileSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("ProjectileSpawnPoint")));
+	if (ProjectileSpawnPoint == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to projectile spawn point"));
+	}
+
+	MineSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("MineSpawnPoint")));
+	if (MineSpawnPoint == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to mine spawn point"));
+	}
+
+	Body = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("BodyElement")));
+	if (Body == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to body component"))
+	}
 	
 }
 
@@ -34,8 +53,13 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::TakeHit()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Tank destroyed"));
 	bool e = Destroy();
-	UE_LOG(LogTemp, Warning, TEXT("Destroyed ? : %s"), e ? TEXT("True") : TEXT("False"));
 }
 
+void ATank::ProjectileDestroyed(AActor* DestroyedActor) {
+	ProjectileCount--;
+}
+
+void ATank::MineDestroyed(AActor* DestroyedActor) {
+	MineCount--;
+}

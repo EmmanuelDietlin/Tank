@@ -21,6 +21,10 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UFUNCTION()
+	void ProjectileDestroyed(AActor* DestroyedActor);
+	UFUNCTION()
+	void MineDestroyed(AActor* DestroyedActor);
 
 public:	
 	// Called every frame
@@ -50,6 +54,7 @@ public:
 
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
+	class UStaticMeshComponent* Body = nullptr;
 	class UStaticMeshComponent* ProjectileSpawnPoint = nullptr;
 	class UStaticMeshComponent* MineSpawnPoint = nullptr;
 	float fireTimer = 0;

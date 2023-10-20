@@ -15,25 +15,23 @@ APlayerTank::APlayerTank()
 void APlayerTank::BeginPlay() 
 {
 	Super::BeginPlay();
-	Turret = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("TurretElement")));
-	if (Turret == nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("Null ref to turret"));
-	}
-
-	ProjectileSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("ProjectileSpawnPoint")));
-	if (ProjectileSpawnPoint == nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("Null ref to projectile spawn point"));
-	}
-
-	MineSpawnPoint = Cast<UStaticMeshComponent>(GetDefaultSubobjectByName(TEXT("MineSpawnPoint")));
-	if (MineSpawnPoint == nullptr) {
-		UE_LOG(LogTemp, Warning, TEXT("Null ref to mine spawn point"));
-	}
 
 	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	if (PlayerController == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Null ref for player controller"));
 	}
+
+	CharacterMovement = GetCharacterMovement();
+	if (CharacterMovement == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref for character movement component"));
+	}
+
+	Collision = Cast<UCapsuleComponent>(GetRootComponent());
+	if (Collision == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref to collision"));
+		return;
+	}
+	Collision->OnComponentHit.AddDynamic(this, &APlayerTank::OnHit);
 }
 
 void APlayerTank::Tick(float DeltaTime)
@@ -56,6 +54,19 @@ void APlayerTank::Tick(float DeltaTime)
 	turretRotation.SetComponentForAxis(EAxis::X, 0);
 	turretRotation.SetComponentForAxis(EAxis::Y, 0);
 	Turret->SetWorldRotation(turretRotation);
+
+
+	if (Body == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref for tank body "));
+		return;
+	}
+	FQuat currentRotation = Body->GetComponentQuat();
+	FRotator nextRotation = FRotator::ZeroRotator;
+	nextRotation.SetComponentForAxis(EAxis::Z, ZRotationSpeed * DeltaTime);
+	currentRotation *= nextRotation.Quaternion();
+	Body->SetWorldRotation(currentRotation);
+
+	ZRotationSpeed = 0;
 
 }
 
@@ -82,9 +93,15 @@ void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 
 void APlayerTank::Move(const FInputActionValue& value) {
 	FVector2d vector = value.Get<FVector2d>();
-	FVector forward = GetActorForwardVector();
+	if (Body == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Null ref for tank body "));
+		return;
+	}
+	//FVector forward = GetActorForwardVector();
+	FVector forward = Body->GetForwardVector();
 	AddMovementInput(forward, vector.Y * ForwardSpeed);
-	AddControllerYawInput(vector.X * RotationSpeed * 2 * PI / 360);
+	//AddControllerYawInput(vector.X * RotationSpeed * 2 * PI / 360);
+	ZRotationSpeed = vector.X * RotationSpeed;
 }
 
 void APlayerTank::Fire(const FInputActionValue& value) 
@@ -95,7 +112,6 @@ void APlayerTank::Fire(const FInputActionValue& value)
 	if (world == nullptr) return;
 	if (ProjectileSpawnPoint == nullptr) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("Fire Projectile"));
 	AProjectile* bullet = Cast<AProjectile>(world->SpawnActor(Projectile));
 	bullet->SetActorLocationAndRotation(
 		ProjectileSpawnPoint->GetComponentLocation(),
@@ -118,7 +134,6 @@ void APlayerTank::PlaceMine(const FInputActionValue& value)
 	if (MineData->Mines.Contains(MineType) == false) return;
 	if (MineData->Mines[MineType].Mine == nullptr) return;
 
-	UE_LOG(LogTemp, Warning, TEXT("Place Mine"));
 	AMine* mine = Cast<AMine>(world->SpawnActor(MineData->Mines[MineType].Mine));
 	mine->SetActorLocation(MineSpawnPoint->GetComponentLocation());
 	mine->MineExplosionDelay = MineData->Mines[MineType].MineExplosionDelay;
@@ -128,10 +143,17 @@ void APlayerTank::PlaceMine(const FInputActionValue& value)
 	MineCount++;
 }
 
-void APlayerTank::ProjectileDestroyed(AActor* DestroyedActor) {
-	ProjectileCount--;
-}
-
-void APlayerTank::MineDestroyed(AActor* DestroyedActor) {
-	MineCount--;
+void APlayerTank::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	if (Body == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Body is null"));
+		return;
+	}
+	FVector forward = Body->GetForwardVector();
+	forward.Normalize();
+	FVector normal = Hit.Normal;
+	normal.Normalize();
+	if (forward.Dot(normal) < -.01f) {
+		CharacterMovement->Velocity = FVector::Zero();
+	}
 }

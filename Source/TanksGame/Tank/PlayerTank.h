@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Tank.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
 #include "EnhancedInputSubsystems.h"
@@ -30,12 +32,14 @@ private:
 	void Fire(const FInputActionValue& value);
 	void PlaceMine(const FInputActionValue& value);
 	UFUNCTION()
-	void ProjectileDestroyed(AActor* DestroyedActor);
-	UFUNCTION()
-	void MineDestroyed(AActor* DestroyedActor);
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
 	APlayerController* PlayerController;
 	FVector MousePosition;
+	UCapsuleComponent* Collision = nullptr;
+	UCharacterMovementComponent* CharacterMovement = nullptr;
+
+	float ZRotationSpeed = 0;
 
 
 public:
