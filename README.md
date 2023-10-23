@@ -30,6 +30,4 @@ Le joueur dispose de deux armes :
 
 [![ecran de jeu : niveau 1](resources/level.PNG)]("https://github.com/EmmanuelDietlin/Tank/")
 
-Pour observer le fonctionnement du mini-jeu original, vous pouvez vous référer à la vidéo ci-dessous :
-
-[![wii play tanks](https://img.youtube.com/vi/orLxrg51xL8?si=tM9QWwh8257nQhhK/0.jpg)](https://www.youtube.com/watch?v=orLxrg51xL8?si=tM9QWwh8257nQhhK)
+Pour observer le fonctionnement du mini-jeu original, vous pouvez vous référer à la vidéo [ici](https://www.youtube.com/watch?v=orLxrg51xL8?si=tM9QWwh8257nQhhK)
