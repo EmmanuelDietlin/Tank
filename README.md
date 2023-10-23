@@ -1,1 +1,35 @@
-# Tank
+## Projet "Tank"
+
+Ce projet a pour but de recréer en partie le [mini-jeu de tanks](https://www.youtube.com/watch?v=orLxrg51xL8&t=4s) disponible sur le jeu "Wii Sports".
+
+J'effectue ce projet afin d'apprendre à utiliser le moteur de jeu *Unreal Engine* ainsi que d'améliorer mes compétences en C++.
+
+[![ecran de jeu : menu principal](Readme_resources/main_menu.png)]("https://github.com/EmmanuelDietlin/Tank/")
+
+------
+
+## Outils
+
+Le jeu est développé via le moteur de jeu **Unreal Engine**. 
+
+Les différents comportement sont implémentés principalement avec des classes C++, mais les *Blueprints* sont également utilisés.
+
+Le [wiki](https://nintendo.fandom.com/wiki/Tanks!) relatif à ce mini-jeu est également utilisé afin d'avoir les informations relatives aux comportements des différents tanks ennemis.
+
+
+------
+
+## Principe
+
+L'objectif du jeu est de parvenir à détruire tous les tanks ennemis dans un niveau, afin de parvenir au niveau suivant. Lorsque le joueur parvient à finir le dernier niveau, il remporte alors la victoire et peut retourner au menu.
+
+Le joueur dispose de deux armes :
+- Le canon, qui lui permet de tirer un certain nombre de projectiles qui peuvent rebondir sur les murs un certain nombre de fois. Lorsqu'un projectile rentre en contact avec un tank, le tank est détruit.
+- La mine, qu'il peut placer au sol. Au bout d'un certain temps, la mine explose, détruisant tanks et murs destructibles à proximité.
+
+
+[![ecran de jeu : niveau 1](Readme_resources/level.png)]("https://github.com/EmmanuelDietlin/Tank/")
+
+Pour observer le fonctionnement du mini-jeu original, vous pouvez vous référer à la vidéo ci-dessous :
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/orLxrg51xL8?si=tM9QWwh8257nQhhK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
