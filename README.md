@@ -4,7 +4,7 @@ Ce projet a pour but de recréer en partie le [mini-jeu de tanks](https://www.yo
 
 J'effectue ce projet afin d'apprendre à utiliser le moteur de jeu *Unreal Engine* ainsi que d'améliorer mes compétences en C++.
 
-[![ecran de jeu : menu principal](resources/main_menu.png)]("https://github.com/EmmanuelDietlin/Tank/blob/main/")
+[![ecran de jeu : menu principal](resources/main_menu.PNG)]("https://github.com/EmmanuelDietlin/Tank/")
 
 ------
 
@@ -28,7 +28,7 @@ Le joueur dispose de deux armes :
 - La mine, qu'il peut placer au sol. Au bout d'un certain temps, la mine explose, détruisant tanks et murs destructibles à proximité.
 
 
-[![ecran de jeu : niveau 1](resources/level.png)]("https://github.com/EmmanuelDietlin/Tank/")
+[![ecran de jeu : niveau 1](resources/level.PNG)]("https://github.com/EmmanuelDietlin/Tank/")
 
 Pour observer le fonctionnement du mini-jeu original, vous pouvez vous référer à la vidéo ci-dessous :
 
