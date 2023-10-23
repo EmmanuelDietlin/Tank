@@ -32,4 +32,4 @@ Le joueur dispose de deux armes :
 
 Pour observer le fonctionnement du mini-jeu original, vous pouvez vous référer à la vidéo ci-dessous :
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/orLxrg51xL8?si=tM9QWwh8257nQhhK" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![wii play tanks](https://img.youtube.com/vi/orLxrg51xL8?si=tM9QWwh8257nQhhK/0.jpg)](https://www.youtube.com/watch?v=orLxrg51xL8?si=tM9QWwh8257nQhhK)
