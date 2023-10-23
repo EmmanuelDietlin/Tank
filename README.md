@@ -1,4 +1,4 @@
-## Projet "Tank"
+## TankMania
 
 Ce projet a pour but de recréer en partie le [mini-jeu de tanks](https://www.youtube.com/watch?v=orLxrg51xL8&t=4s) disponible sur le jeu "Wii Sports".
 
