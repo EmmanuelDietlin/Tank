@@ -4,7 +4,7 @@ Ce projet a pour but de recréer en partie le [mini-jeu de tanks](https://www.yo
 
 J'effectue ce projet afin d'apprendre à utiliser le moteur de jeu *Unreal Engine* ainsi que d'améliorer mes compétences en C++.
 
-[![ecran de jeu : menu principal](resources/main_menu.png)]("https://github.com/EmmanuelDietlin/Tank/")
+[![ecran de jeu : menu principal](resources/main_menu.png)]("https://github.com/EmmanuelDietlin/Tank/blob/main/")
 
 ------
 
