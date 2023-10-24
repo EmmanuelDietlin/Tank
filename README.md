@@ -2,7 +2,7 @@
 
 Ce projet a pour but de recréer en partie le [mini-jeu de tanks](https://www.youtube.com/watch?v=orLxrg51xL8&t=4s) disponible sur le jeu "Wii Sports".
 
-J'effectue ce projet afin d'apprendre à utiliser le moteur de jeu *Unreal Engine* ainsi que d'améliorer mes compétences en C++.
+J'effectue ce projet afin d'apprendre à utiliser le moteur de jeu *Unreal Engine* ainsi que pour améliorer mes compétences en C++.
 
 [![ecran de jeu : menu principal](resources/main_menu.PNG)]("https://github.com/EmmanuelDietlin/Tank/")
 
