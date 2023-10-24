@@ -20,34 +20,42 @@ class TANKSGAME_API APlayerTank : public ATank
 {
 	GENERATED_BODY()
 
-public:
-	APlayerTank();
-
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-private:
-	void Move(const FInputActionValue& value);
-	void Fire(const FInputActionValue& value);
-	void PlaceMine(const FInputActionValue& value);
-	UFUNCTION()
-	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
-
-	APlayerController* PlayerController;
-	FVector MousePosition;
-	UCapsuleComponent* Collision = nullptr;
-	UCharacterMovementComponent* CharacterMovement = nullptr;
-
-	float ZRotationSpeed = 0;
-
-
+#pragma region Methods
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
+private:
+	//Function to move the tank forward
+	void Move(const FInputActionValue& value);
+
+	//Function to fire a projectile
+	void Fire(const FInputActionValue& value);
+
+	//Function to place a mine 
+	void PlaceMine(const FInputActionValue& value);
+
+	//Function triggered on hit
+	UFUNCTION()
+	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+#pragma endregion
+
+#pragma region Fields
+private:
+	APlayerController* PlayerController;
+	FVector MousePosition;
+	UCapsuleComponent* Collision = nullptr;
+	UCharacterMovementComponent* CharacterMovement = nullptr;
+
+	float ZRotationSpeed = 0;
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Inputs")
@@ -82,5 +90,15 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Projectile")
 	TArray<FString> EnemyTags = { "Enemy" };
-	
+
+	UPROPERTY(EditAnywhere, Category = "Inputs")
+	class UInputAction* MoveAction;
+
+	UPROPERTY(EditAnywhere, Category = "Inputs")
+	class UInputAction* FireAction;
+
+	UPROPERTY(EditAnywhere, Category = "Inputs")
+	class UInputAction* PlaceMineAction;
+
+#pragma endregion
 };

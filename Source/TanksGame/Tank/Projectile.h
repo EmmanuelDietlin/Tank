@@ -10,11 +10,8 @@ UCLASS()
 class TANKSGAME_API AProjectile : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AProjectile();
 
+#pragma region Methods
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -23,10 +20,14 @@ protected:
 	UFUNCTION()
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	// Sets default values for this actor's properties
+	AProjectile();
+#pragma endregion
 
+#pragma region Fields
 public:
 	UPROPERTY(BlueprintReadonly)
 	float Speed = 10;
@@ -34,6 +35,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int Bounces = 1;
 	UPROPERTY(BlueprintReadonly)
-	TArray<FString> TargetTags = {"Enemy"};
+	TArray<FString> TargetTags = { "Enemy" };
 
+#pragma endregion
 };

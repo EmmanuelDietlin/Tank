@@ -1,5 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
 #pragma once
 
 #include "TanksData.h"
@@ -15,14 +13,8 @@ UCLASS()
 class TANKSGAME_API AEnemyTank : public ATank
 {
 	GENERATED_BODY()
-	
-public:
-	UPROPERTY(EditAnywhere, Category = "Tank")
-	class UTanksData* TanksData;
 
-	UPROPERTY(EditAnywhere, Category = "Tank")
-	TEnumAsByte<TankTypes> TankType;
-
+#pragma region Methods
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -39,9 +31,18 @@ public:
 	FRotator GetTurretRotation();
 	UFUNCTION(BlueprintCallable)
 	void RotateTurret(FRotator TargetRotation, double DeltaTime);
+#pragma endregion
+
+#pragma region Fields
+public:
+	UPROPERTY(EditAnywhere, Category = "Tank")
+	class UTanksData* TanksData;
+
+	UPROPERTY(EditAnywhere, Category = "Tank")
+	TEnumAsByte<TankTypes> TankType;
 
 private:
 	UTankGameInstance* TankGameInstance;
-
+#pragma endregion
 };
 

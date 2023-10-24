@@ -11,21 +11,22 @@ UCLASS()
 class TANKSGAME_API AMine : public AActor
 {
 	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AMine();
 
+#pragma region Methods
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
 	void Explode();
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	// Sets default values for this actor's properties
+	AMine();
+#pragma endregion
 
+#pragma region Fields
 public:
 	UPROPERTY(BlueprintReadonly)
 	TArray<FString> EnemyTags = { "Enemy" };
@@ -36,5 +37,7 @@ public:
 private:
 	float mineTimer = 0;
 	USphereComponent* ExplosionSphere;
+
+#pragma endregion
 
 };

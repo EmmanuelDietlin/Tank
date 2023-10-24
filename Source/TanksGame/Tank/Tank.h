@@ -14,6 +14,7 @@ class TANKSGAME_API ATank : public ACharacter
 {
 	GENERATED_BODY()
 
+#pragma region Methods
 public:
 	// Sets default values for this character's properties
 	ATank();
@@ -34,23 +35,15 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UFUNCTION(BlueprintCallable)
 	void TakeHit();
+#pragma endregion
 
+#pragma region Fields
 public:
-	UPROPERTY(EditAnywhere, Category = "Inputs")
-	class UInputAction* MoveAction;
-
-	UPROPERTY(EditAnywhere, Category = "Inputs")
-	class UInputAction* FireAction;
-
-	UPROPERTY(EditAnywhere, Category = "Inputs")
-	class UInputAction* PlaceMineAction;
-
 	UPROPERTY(EditAnywhere, Category = "Mine")
 	UMinesData* MineData;
 
 	UPROPERTY(EditAnywhere, Category = "Mine")
 	TEnumAsByte<MineTypes> MineType = MineTypes::StandardMine;
-
 
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
@@ -61,5 +54,5 @@ protected:
 	float minePlaceTimer = 0;
 	int ProjectileCount = 0;
 	int MineCount = 0;
-
+#pragma endregion
 };

@@ -1,16 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "PlayerTank.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
-
-
-APlayerTank::APlayerTank() 
-{
-
-}
 
 void APlayerTank::BeginPlay() 
 {
