@@ -6,6 +6,9 @@ J'effectue ce projet afin d'apprendre à utiliser le moteur de jeu *Unreal Engin
 
 [![ecran de jeu : menu principal](resources/main_menu.PNG)]("https://github.com/EmmanuelDietlin/Tank/")
 
+
+Vous pouvez retrouver une version téléchargeable du jeu [ici](https://manudiet.itch.io/tankmania).
+
 ------
 
 ## Outils
