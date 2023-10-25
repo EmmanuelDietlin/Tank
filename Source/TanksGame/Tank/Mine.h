@@ -31,12 +31,16 @@ public:
 	UPROPERTY(BlueprintReadonly)
 	TArray<FString> EnemyTags = { "Enemy" };
 
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	USoundWave* ExplosionSound;
+
 	float MineExplosionDelay = 2;
 	float ExplosionRadius = 1;
 
 private:
 	float mineTimer = 0;
 	USphereComponent* ExplosionSphere;
+
 
 #pragma endregion
 

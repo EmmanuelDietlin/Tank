@@ -5,14 +5,15 @@
 #include "Tank.h"
 #include "DestructibleWall.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AMine::AMine()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	ExplosionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Explosion"));
-
+	ExplosionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("ExplosionSphere"));
+	
 }
 
 // Called when the game starts or when spawned
@@ -48,6 +49,9 @@ void AMine::Explode()
 		else if (ADestructibleWall* wall = Cast<ADestructibleWall>(it)) {
 			wall->TakeHit();
 		}
+	}
+	if (ExplosionSound != nullptr) {
+		UGameplayStatics::PlaySound2D(this, ExplosionSound);
 	}
 	Destroy();
 }

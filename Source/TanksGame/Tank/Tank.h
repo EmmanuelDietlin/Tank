@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Projectile.h"
+#include "Components/AudioComponent.h"
+#include "Sound/SoundWave.h"
 #include "MinesData.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
@@ -44,6 +46,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Mine")
 	TEnumAsByte<MineTypes> MineType = MineTypes::StandardMine;
+
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	USoundWave* ExplosionSound;
 
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
