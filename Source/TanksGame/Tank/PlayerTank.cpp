@@ -144,7 +144,7 @@ void APlayerTank::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	forward.Normalize();
 	FVector normal = Hit.Normal;
 	normal.Normalize();
-	if (forward.Dot(normal) < -.01f) {
+	if (forward.Dot(normal) < -.1f) {
 		CharacterMovement->Velocity = FVector::Zero();
 	}
 }
