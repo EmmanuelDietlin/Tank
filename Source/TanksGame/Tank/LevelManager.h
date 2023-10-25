@@ -9,6 +9,7 @@
 #include "LevelManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVictoryDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNextLevelDelegate);
 
 UCLASS()
 class TANKSGAME_API ALevelManager : public AActor
@@ -39,7 +40,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FVictoryDelegate OnVictoryDelegate;
 
+	UPROPERTY(BlueprintAssignable)
+	FNextLevelDelegate OnNextLevelDelegate;
+
 	UPROPERTY(EditAnywhere, Category = "Next Level")
 	bool IsLastLevel = false;
-
 };

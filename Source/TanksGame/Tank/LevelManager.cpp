@@ -30,6 +30,7 @@ void ALevelManager::Tick(float DeltaTime)
 	}
 	if (remainingTanks == 0) {
 		if (IsLastLevel == false) {
+			OnNextLevelDelegate.Broadcast();
 			UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
 		}
 		else {
