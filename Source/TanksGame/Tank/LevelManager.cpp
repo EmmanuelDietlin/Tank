@@ -30,12 +30,18 @@ void ALevelManager::Tick(float DeltaTime)
 	}
 	if (remainingTanks == 0) {
 		if (IsLastLevel == false) {
-			OnNextLevelDelegate.Broadcast();
-			UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
+			if (LevelChangeTimer <= 0) {
+				OnNextLevelDelegate.Broadcast();
+			}
+			if (LevelChangeTimer >= NextLevelTimer) {
+				UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
+			}
+			LevelChangeTimer += DeltaTime;
 		}
 		else {
 			OnVictoryDelegate.Broadcast();
 		}
+		UE_LOG(LogTemp, Warning, TEXT("%f"), LevelChangeTimer);
 	}
 }
 

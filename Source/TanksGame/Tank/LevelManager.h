@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "EnemyTank.h"
 #include "TankSaveGame.h"
+#include "Engine/EngineTypes.h"
 #include "GameFramework/Actor.h"
 #include "LevelManager.generated.h"
 
@@ -21,6 +22,8 @@ public:
 	ALevelManager();
 
 private:
+	FTimerHandle ChangeLevelTimer;
+	float LevelChangeTimer = 0;
 
 protected:
 	// Called when the game starts or when spawned
@@ -45,4 +48,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Next Level")
 	bool IsLastLevel = false;
+
+	UPROPERTY(EditAnywhere, Category = "Next Level")
+	float NextLevelTimer = 2;
 };
