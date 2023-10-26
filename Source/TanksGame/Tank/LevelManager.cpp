@@ -29,19 +29,21 @@ void ALevelManager::Tick(float DeltaTime)
 		}
 	}
 	if (remainingTanks == 0) {
-		if (IsLastLevel == false) {
-			if (LevelChangeTimer <= 0) {
+		if (LevelEnded == false) {
+			if (IsLastLevel == false) {
 				OnNextLevelDelegate.Broadcast();
 			}
+			else {
+				OnVictoryDelegate.Broadcast();
+			}
+			LevelEnded = true;
+		}
+		if (IsLastLevel == false) {
 			if (LevelChangeTimer >= NextLevelTimer) {
 				UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
 			}
 			LevelChangeTimer += DeltaTime;
 		}
-		else {
-			OnVictoryDelegate.Broadcast();
-		}
-		UE_LOG(LogTemp, Warning, TEXT("%f"), LevelChangeTimer);
 	}
 }
 

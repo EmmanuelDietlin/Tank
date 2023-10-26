@@ -27,9 +27,11 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Basic")
 	int MaxScore;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Basic")
+	float SoundVolume = 1 UMETA(ClampMin = "0", ClampMax = "1");
 
-
-
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Basic")
+	float MusicVolume = 1 UMETA(ClampMin = "0", ClampMax = "1");
 
 	UTankSaveGame();
 	

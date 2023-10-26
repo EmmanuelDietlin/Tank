@@ -24,6 +24,7 @@ public:
 private:
 	FTimerHandle ChangeLevelTimer;
 	float LevelChangeTimer = 0;
+	bool LevelEnded = false;
 
 protected:
 	// Called when the game starts or when spawned
