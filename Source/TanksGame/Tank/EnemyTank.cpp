@@ -1,5 +1,6 @@
 #include "EnemyTank.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
 
 void AEnemyTank::BeginPlay() {
 	Super::BeginPlay();
@@ -42,6 +43,11 @@ void AEnemyTank::Fire()
 	bullet->TargetTags = TanksData->TanksData[TankType].EnemyTags;
 	bullet->OnDestroyed.AddDynamic(this, &AEnemyTank::ProjectileDestroyed);
 	ProjectileCount++;
+
+	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
+	if (FireSound != nullptr && TankSaveGame != nullptr) {
+		UGameplayStatics::PlaySound2D(this, FireSound, FireSoundVolume * TankSaveGame->SoundVolume);
+	}
 }
 
 void AEnemyTank::PlaceMine()
@@ -64,6 +70,11 @@ void AEnemyTank::PlaceMine()
 	mine->ExplosionRadius = MineData->Mines[MineType].MineExplosionRadius;
 	mine->OnDestroyed.AddDynamic(this, &AEnemyTank::MineDestroyed);
 	MineCount++;
+
+	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
+	if (MinePlaceSound != nullptr && TankSaveGame != nullptr) {
+		UGameplayStatics::PlaySound2D(this, MinePlaceSound, MinePlaceSoundVolume * TankSaveGame->SoundVolume);
+	}
 }
 
 FRotator AEnemyTank::GetTurretRotation() {

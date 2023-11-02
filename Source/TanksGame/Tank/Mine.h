@@ -34,6 +34,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	USoundWave* ExplosionSound;
 
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	float ExplosionSoundVolume = .2f UMETA(ClampMin = 0f, ClampMax = 1f);
+
 	float MineExplosionDelay = 2;
 	float ExplosionRadius = 1;
 

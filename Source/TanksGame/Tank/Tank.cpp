@@ -1,5 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 #include "Tank.h"
+#include "TankGameInstance.h"
 #include "Kismet/GameplayStatics.h"
 
 
@@ -34,6 +35,8 @@ void ATank::BeginPlay()
 	if (Body == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Null ref to body component"))
 	}
+
+	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
 	
 }
 
@@ -54,8 +57,9 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::TakeHit()
 {
-	if (ExplosionSound != nullptr) {
-		UGameplayStatics::PlaySound2D(this, ExplosionSound);
+	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
+	if (ExplosionSound != nullptr && TankSaveGame != nullptr) {
+		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankSaveGame->SoundVolume);
 	}
 	bool e = Destroy();
 }

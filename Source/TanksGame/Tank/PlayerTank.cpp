@@ -111,6 +111,11 @@ void APlayerTank::Fire(const FInputActionValue& value)
 	bullet->TargetTags = EnemyTags;
 	bullet->OnDestroyed.AddDynamic(this, &APlayerTank::ProjectileDestroyed);
 	ProjectileCount++;
+
+	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
+	if (FireSound != nullptr && TankSaveGame != nullptr) {
+		UGameplayStatics::PlaySound2D(this, FireSound, FireSoundVolume * TankSaveGame->SoundVolume);
+	}
 }
 
 void APlayerTank::PlaceMine(const FInputActionValue& value) 
@@ -132,6 +137,11 @@ void APlayerTank::PlaceMine(const FInputActionValue& value)
 	mine->ExplosionRadius = MineData->Mines[MineType].MineExplosionRadius;
 	mine->OnDestroyed.AddDynamic(this, &APlayerTank::MineDestroyed);
 	MineCount++;
+
+	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
+	if (MinePlaceSound != nullptr && TankSaveGame != nullptr) {
+		UGameplayStatics::PlaySound2D(this, MinePlaceSound, MinePlaceSoundVolume * TankSaveGame->SoundVolume);
+	}
 }
 
 void APlayerTank::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)

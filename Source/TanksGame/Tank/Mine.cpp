@@ -51,7 +51,7 @@ void AMine::Explode()
 		}
 	}
 	if (ExplosionSound != nullptr) {
-		UGameplayStatics::PlaySound2D(this, ExplosionSound);
+		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume);
 	}
 	Destroy();
 }

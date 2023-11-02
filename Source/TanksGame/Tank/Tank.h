@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Projectile.h"
+#include "TankSaveGame.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundWave.h"
 #include "MinesData.h"
@@ -50,11 +51,27 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	USoundWave* ExplosionSound;
 
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	float ExplosionSoundVolume = .2f UMETA(ClampMin = 0f, ClampMax = 1f);
+	
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	USoundWave* FireSound;
+
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	float FireSoundVolume = .5f UMETA(ClampMin = 0f, ClampMax = 1f);
+
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	USoundWave* MinePlaceSound;
+
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	float MinePlaceSoundVolume= .5f UMETA(ClampMin = 0f, ClampMax = 1f);
+
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
 	class UStaticMeshComponent* Body = nullptr;
 	class UStaticMeshComponent* ProjectileSpawnPoint = nullptr;
 	class UStaticMeshComponent* MineSpawnPoint = nullptr;
+	class UTankSaveGame* TankSaveGame = nullptr;
 	float fireTimer = 0;
 	float minePlaceTimer = 0;
 	int ProjectileCount = 0;
