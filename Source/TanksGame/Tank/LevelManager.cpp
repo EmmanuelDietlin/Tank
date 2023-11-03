@@ -22,6 +22,7 @@ void ALevelManager::BeginPlay()
 void ALevelManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (Debug) return;
 	int remainingTanks = 0;
 	for (int i = EnemyTanks.Num() - 1; i >= 0; i--) {
 		if (EnemyTanks[i].IsValid()) {

@@ -52,4 +52,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Next Level")
 	float NextLevelTimer = 2;
+
+	UPROPERTY(EditAnywhere, Category = "Next Level")
+	bool Debug = false;
 };
