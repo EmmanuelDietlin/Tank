@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
+#include "TankGameInstance.h"
 #include "GameFramework/Actor.h"
 #include "Mine.generated.h"
 
@@ -43,6 +44,7 @@ public:
 private:
 	float mineTimer = 0;
 	USphereComponent* ExplosionSphere;
+	UTankGameInstance* TankGameInstance = nullptr;
 
 
 #pragma endregion

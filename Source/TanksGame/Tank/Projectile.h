@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Sound/SoundWave.h"
+#include "TankGameInstance.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
 
@@ -31,7 +32,7 @@ public:
 #pragma region Fields
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Sounds")
-	USoundWave* BounceSound;
+	USoundWave* BounceSound = nullptr;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Sounds")
 	float BounceSoundVolume = .5f UMETA(ClampMin = 0f, ClampMax = 1f);
@@ -44,5 +45,8 @@ public:
 	UPROPERTY(BlueprintReadonly)
 	TArray<FString> TargetTags = { "Enemy" };
 
+protected:
+	UPROPERTY(BlueprintReadonly)
+	UTankGameInstance* TankGameInstance = nullptr;
 #pragma endregion
 };

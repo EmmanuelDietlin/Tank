@@ -17,5 +17,14 @@ class TANKSGAME_API UTankGameInstance : public UGameInstance
 public:
 	UPROPERTY(BlueprintReadWrite)
 	int Score = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	float SoundVolume = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	float MusicVolume = 0;
+
+	UPROPERTY(BlueprintReadWrite)
+	int Lives = 4;
 	
 };

@@ -4,13 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Projectile.h"
-#include "TankSaveGame.h"
+#include "TankGameInstance.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundWave.h"
 #include "MinesData.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
 #include "Tank.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDestroyedDelegate);
 
 UCLASS()
 class TANKSGAME_API ATank : public ACharacter
@@ -66,12 +68,15 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	float MinePlaceSoundVolume= .5f UMETA(ClampMin = 0f, ClampMax = 1f);
 
+	UPROPERTY(BlueprintAssignable)
+	FTankDestroyedDelegate OnTankDestroyed;
+
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
 	class UStaticMeshComponent* Body = nullptr;
 	class UStaticMeshComponent* ProjectileSpawnPoint = nullptr;
 	class UStaticMeshComponent* MineSpawnPoint = nullptr;
-	class UTankSaveGame* TankSaveGame = nullptr;
+	class UTankGameInstance* TankGameInstance = nullptr;
 	float fireTimer = 0;
 	float minePlaceTimer = 0;
 	int ProjectileCount = 0;

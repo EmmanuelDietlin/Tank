@@ -112,9 +112,10 @@ void APlayerTank::Fire(const FInputActionValue& value)
 	bullet->OnDestroyed.AddDynamic(this, &APlayerTank::ProjectileDestroyed);
 	ProjectileCount++;
 
-	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
-	if (FireSound != nullptr && TankSaveGame != nullptr) {
-		UGameplayStatics::PlaySound2D(this, FireSound, FireSoundVolume * TankSaveGame->SoundVolume);
+	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
+	if (FireSound != nullptr && TankGameInstance != nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("%f"), TankGameInstance->SoundVolume);
+		UGameplayStatics::PlaySound2D(this, FireSound, FireSoundVolume * TankGameInstance->SoundVolume);
 	}
 }
 
@@ -138,9 +139,9 @@ void APlayerTank::PlaceMine(const FInputActionValue& value)
 	mine->OnDestroyed.AddDynamic(this, &APlayerTank::MineDestroyed);
 	MineCount++;
 
-	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
-	if (MinePlaceSound != nullptr && TankSaveGame != nullptr) {
-		UGameplayStatics::PlaySound2D(this, MinePlaceSound, MinePlaceSoundVolume * TankSaveGame->SoundVolume);
+	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
+	if (MinePlaceSound != nullptr && TankGameInstance != nullptr) {
+		UGameplayStatics::PlaySound2D(this, MinePlaceSound, MinePlaceSoundVolume * TankGameInstance->SoundVolume);
 	}
 }
 

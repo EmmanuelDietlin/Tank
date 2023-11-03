@@ -36,7 +36,7 @@ void ATank::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("Null ref to body component"))
 	}
 
-	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
+	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
 	
 }
 
@@ -57,10 +57,10 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::TakeHit()
 {
-	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
-	if (ExplosionSound != nullptr && TankSaveGame != nullptr) {
-		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankSaveGame->SoundVolume);
+	if (ExplosionSound != nullptr && TankGameInstance != nullptr) {
+		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankGameInstance->SoundVolume);
 	}
+	OnTankDestroyed.Broadcast();
 	bool e = Destroy();
 }
 

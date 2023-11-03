@@ -44,9 +44,8 @@ void AEnemyTank::Fire()
 	bullet->OnDestroyed.AddDynamic(this, &AEnemyTank::ProjectileDestroyed);
 	ProjectileCount++;
 
-	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
-	if (FireSound != nullptr && TankSaveGame != nullptr) {
-		UGameplayStatics::PlaySound2D(this, FireSound, FireSoundVolume * TankSaveGame->SoundVolume);
+	if (FireSound != nullptr && TankGameInstance != nullptr) {
+		UGameplayStatics::PlaySound2D(this, FireSound, FireSoundVolume * TankGameInstance->SoundVolume);
 	}
 }
 
@@ -71,9 +70,8 @@ void AEnemyTank::PlaceMine()
 	mine->OnDestroyed.AddDynamic(this, &AEnemyTank::MineDestroyed);
 	MineCount++;
 
-	TankSaveGame = Cast<UTankSaveGame>(UGameplayStatics::LoadGameFromSlot("TankSave", 0));
-	if (MinePlaceSound != nullptr && TankSaveGame != nullptr) {
-		UGameplayStatics::PlaySound2D(this, MinePlaceSound, MinePlaceSoundVolume * TankSaveGame->SoundVolume);
+	if (MinePlaceSound != nullptr && TankGameInstance != nullptr) {
+		UGameplayStatics::PlaySound2D(this, MinePlaceSound, MinePlaceSoundVolume * TankGameInstance->SoundVolume);
 	}
 }
 

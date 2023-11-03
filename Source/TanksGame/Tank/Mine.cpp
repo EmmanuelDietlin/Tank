@@ -6,6 +6,7 @@
 #include "DestructibleWall.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TankGameInstance.h"
 
 // Sets default values
 AMine::AMine()
@@ -20,6 +21,7 @@ AMine::AMine()
 void AMine::BeginPlay()
 {
 	Super::BeginPlay();
+	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
 	
 }
 
@@ -50,8 +52,8 @@ void AMine::Explode()
 			wall->TakeHit();
 		}
 	}
-	if (ExplosionSound != nullptr) {
-		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume);
+	if (ExplosionSound != nullptr && TankGameInstance != nullptr) {
+		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankGameInstance->SoundVolume);
 	}
 	Destroy();
 }

@@ -4,6 +4,7 @@
 #include "Projectile.h"
 #include "Tank.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AProjectile::AProjectile()
@@ -24,7 +25,8 @@ void AProjectile::BeginPlay()
 	}
 	shapeComponent->OnComponentBeginOverlap.AddDynamic(this, &AProjectile::OverlapBegin);
 	shapeComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
-	
+
+	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
 }
 
 // Called every frame
