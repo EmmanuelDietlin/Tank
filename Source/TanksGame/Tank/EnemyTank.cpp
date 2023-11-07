@@ -117,4 +117,12 @@ void AEnemyTank::RotateTurret(FRotator TargetRotation, double DeltaTime) {
 	Turret->SetWorldRotation(turretRotation);
 }
 
+void AEnemyTank::SetTurretRotation(FRotator TargetRotation) {
+	if (Turret == nullptr) return;
+	TargetRotation.Roll = 0;
+	TargetRotation.Pitch = 0;
+	Turret->SetRelativeRotation(TargetRotation);
+}
+
+
  

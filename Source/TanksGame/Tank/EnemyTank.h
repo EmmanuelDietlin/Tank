@@ -4,6 +4,7 @@
 #include "CoreMinimal.h"
 #include "TankGameInstance.h"
 #include "Tank.h"
+#include "PlayerTank.h"
 #include "EnemyTank.generated.h"
 
 /**
@@ -31,6 +32,8 @@ public:
 	FRotator GetTurretRotation();
 	UFUNCTION(BlueprintCallable)
 	void RotateTurret(FRotator TargetRotation, double DeltaTime);
+	UFUNCTION(BlueprintCallable)
+	void SetTurretRotation(FRotator TargetRotation);
 #pragma endregion
 
 #pragma region Fields
@@ -43,6 +46,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	FVector NextPosition = FVector::ZeroVector;
+
+	UPROPERTY(BlueprintReadWrite)
+	TWeakObjectPtr<APlayerTank> PlayerTank;
 
 private:
 	UTankGameInstance* TankGameInstance;
