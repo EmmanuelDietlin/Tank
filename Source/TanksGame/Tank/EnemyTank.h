@@ -31,9 +31,6 @@ public:
 	FRotator GetTurretRotation();
 	UFUNCTION(BlueprintCallable)
 	void RotateTurret(FRotator TargetRotation, double DeltaTime);
-
-	UFUNCTION(BlueprintCallable)
-	void SetTargetPosition(FVector Position);
 #pragma endregion
 
 #pragma region Fields
