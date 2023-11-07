@@ -88,10 +88,8 @@ void APlayerTank::Move(const FInputActionValue& value) {
 		UE_LOG(LogTemp, Warning, TEXT("Null ref for tank body "));
 		return;
 	}
-	//FVector forward = GetActorForwardVector();
 	FVector forward = Body->GetForwardVector();
 	AddMovementInput(forward, vector.Y * ForwardSpeed);
-	//AddControllerYawInput(vector.X * RotationSpeed * 2 * PI / 360);
 	ZRotationSpeed = vector.X * RotationSpeed;
 }
 
