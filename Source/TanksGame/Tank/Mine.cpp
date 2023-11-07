@@ -30,6 +30,10 @@ void AMine::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	mineTimer += DeltaTime;
+	if (ExplosionSphere->GetUnscaledSphereRadius() != ExplosionRadius) {
+		ExplosionSphere->SetSphereRadius(ExplosionRadius);
+	}
+
 	if (mineTimer > MineExplosionDelay) {
 		Explode();
 	}
@@ -41,7 +45,6 @@ void AMine::Explode()
 		UE_LOG(LogTemp, Warning, TEXT("NULL ref for explosion sphere"));
 		return;
 	}
-	ExplosionSphere->SetSphereRadius(ExplosionRadius);
 	TArray<AActor*> overlappingActors;
 	ExplosionSphere->GetOverlappingActors(overlappingActors);
 	for (const auto& it : overlappingActors) {
