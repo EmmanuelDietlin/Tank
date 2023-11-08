@@ -38,6 +38,12 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	float ExplosionSoundVolume = .2f UMETA(ClampMin = 0f, ClampMax = 1f);
 
+	UPROPERTY(EditAnywhere, Category = "Default")
+	float DefaultExplosionRadius = 5 UMETA(ClampMin = 0f);
+
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Debug")
+	bool CanExplode = true;
+
 	float MineExplosionDelay = 2;
 	float ExplosionRadius = 1;
 

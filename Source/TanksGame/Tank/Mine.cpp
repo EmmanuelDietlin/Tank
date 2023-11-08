@@ -13,8 +13,6 @@ AMine::AMine()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	ExplosionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("ExplosionSphere"));
-	
 }
 
 // Called when the game starts or when spawned
@@ -22,15 +20,22 @@ void AMine::BeginPlay()
 {
 	Super::BeginPlay();
 	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
-	
+	ExplosionSphere = Cast<USphereComponent>(RootComponent);
+	if (ExplosionSphere == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("NULL ref for explosion sphere"));
+		return;
+	}
+	ExplosionSphere->SetSphereRadius(DefaultExplosionRadius);
 }
 
 // Called every frame
 void AMine::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (CanExplode == false) return;
+
 	mineTimer += DeltaTime;
-	if (ExplosionSphere->GetUnscaledSphereRadius() != ExplosionRadius) {
+	if (ExplosionSphere != nullptr && ExplosionSphere->GetUnscaledSphereRadius() != ExplosionRadius) {
 		ExplosionSphere->SetSphereRadius(ExplosionRadius);
 	}
 
