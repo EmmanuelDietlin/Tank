@@ -12,7 +12,8 @@
  */
 UENUM()
 enum MineTypes {
-	StandardMine UMETA(DisplayName = "StandardMine")
+	PlayerMine UMETA(DisplayName = "PlayerMine"),
+	EnemyStandadMine UMETA(DisplayName = "EnemyStandardMine"),
 };
 
 USTRUCT()

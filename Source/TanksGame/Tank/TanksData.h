@@ -12,7 +12,7 @@ enum TankTypes {
 	BasicTank UMETA(DisplayName = "BasicTank"),
 	MineTank UMETA(DisplayName = "MineTank"),
 	FastTank UMETA(DisplayName = "FastTank"),
-	FireTank UMETA(DisplayName = "FireTank")
+	BalancedTank UMETA(DisplayName = "BalancedTank")
 };
 
 USTRUCT()

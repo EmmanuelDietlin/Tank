@@ -83,6 +83,9 @@ void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 }
 
 void APlayerTank::Move(const FInputActionValue& value) {
+	if (fireTimer >= ((float)1 / FireRate - MovementStopAfterFire)) {
+		return;
+	}
 	FVector2d vector = value.Get<FVector2d>();
 	if (Body == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Null ref for tank body "));

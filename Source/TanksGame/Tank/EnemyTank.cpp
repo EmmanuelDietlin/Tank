@@ -33,8 +33,10 @@ void AEnemyTank::Tick(float DeltaTime) {
 	if (NextPosition.Equals(FVector::ZeroVector)) return;
 
 	//Forward movement
-	FVector forward = Body->GetForwardVector();
-	AddMovementInput(forward, TanksData->TanksData[TankType].TankForwardSpeed);
+	if (fireTimer < ((float)1 / TanksData->TanksData[TankType].FireRate - MovementStopAfterFire)) {
+		FVector forward = Body->GetForwardVector();
+		AddMovementInput(forward, TanksData->TanksData[TankType].TankForwardSpeed);
+	}
 
 	//Rotation movement
 	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(Body->GetComponentLocation(), NextPosition);

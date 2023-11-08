@@ -48,7 +48,10 @@ public:
 	UMinesData* MineData;
 
 	UPROPERTY(EditAnywhere, Category = "Mine")
-	TEnumAsByte<MineTypes> MineType = MineTypes::StandardMine;
+	TEnumAsByte<MineTypes> MineType = MineTypes::EnemyStandadMine;
+
+	UPROPERTY(EditAnywhere, Category = "Fire")
+	float MovementStopAfterFire = .05f;
 
 	UPROPERTY(EditAnywhere, Category = "Sounds")
 	USoundWave* ExplosionSound;
@@ -70,6 +73,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FTankDestroyedDelegate OnTankDestroyed;
+
 
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
