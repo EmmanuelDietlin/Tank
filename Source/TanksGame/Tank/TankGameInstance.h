@@ -19,6 +19,9 @@ public:
 	int Score = 0;
 
 	UPROPERTY(BlueprintReadWrite)
+	int LevelScore = 0;
+
+	UPROPERTY(BlueprintReadWrite)
 	float SoundVolume = 0;
 
 	UPROPERTY(BlueprintReadWrite)
@@ -29,5 +32,8 @@ public:
 
 	UPROPERTY(BlueprintReadonly)
 	int MaxLives = 4;
+
+	UPROPERTY(BlueprintReadWrite)
+	int LevelNumber = 1;
 	
 };
