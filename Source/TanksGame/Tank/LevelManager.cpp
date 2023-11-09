@@ -46,5 +46,6 @@ void ALevelManager::Tick(float DeltaTime)
 			LevelChangeTimer += DeltaTime;
 		}
 	}
+	RemainingTanks = remainingTanks;
 }
 

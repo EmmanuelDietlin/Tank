@@ -55,4 +55,7 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Next Level")
 	bool Debug = false;
+
+	UPROPERTY(BlueprintReadonly)
+	int RemainingTanks = 0;
 };

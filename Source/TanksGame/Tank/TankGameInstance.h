@@ -26,5 +26,8 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	int Lives = 4;
+
+	UPROPERTY(BlueprintReadonly)
+	int MaxLives = 4;
 	
 };

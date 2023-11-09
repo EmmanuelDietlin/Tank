@@ -15,13 +15,6 @@ void AEnemyTank::BeginPlay() {
 	}
 }
 
-void AEnemyTank::EndPlay(const EEndPlayReason::Type Reason)
-{
-	Super::EndPlay(Reason);
-	if (TankGameInstance == nullptr) return;
-	TankGameInstance->Score += 1;
-}
-
 void AEnemyTank::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 	if (Body == nullptr) {
