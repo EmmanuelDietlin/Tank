@@ -160,3 +160,7 @@ void APlayerTank::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 		CharacterMovement->Velocity = FVector::Zero();
 	}
 }
+
+int APlayerTank::GetRemainingProjectileCount() {
+	return MaxProjectileCount - ProjectileCount;
+}

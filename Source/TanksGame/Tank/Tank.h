@@ -14,7 +14,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDestroyedDelegate);
 
-UCLASS()
+UCLASS(Abstract)
 class TANKSGAME_API ATank : public ACharacter
 {
 	GENERATED_BODY()
@@ -40,6 +40,8 @@ public:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UFUNCTION(BlueprintCallable)
 	void TakeHit();
+	UFUNCTION(BlueprintCallable)
+	virtual int GetRemainingProjectileCount() { unimplemented(); return 0; };
 #pragma endregion
 
 #pragma region Fields

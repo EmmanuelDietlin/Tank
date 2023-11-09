@@ -119,5 +119,12 @@ void AEnemyTank::SetTurretRotation(FRotator TargetRotation) {
 	Turret->SetRelativeRotation(TargetRotation);
 }
 
+int AEnemyTank::GetRemainingProjectileCount()
+{
+	if (TanksData == nullptr || TanksData->TanksData.Contains(TankType) == false) return 0;
+
+	return (TanksData->TanksData[TankType].MaxProjectileCount - ProjectileCount);
+}
+
 
  

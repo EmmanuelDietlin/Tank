@@ -33,6 +33,7 @@ public:
 	void RotateTurret(FRotator TargetRotation, double DeltaTime);
 	UFUNCTION(BlueprintCallable)
 	void SetTurretRotation(FRotator TargetRotation);
+	int GetRemainingProjectileCount() override;
 #pragma endregion
 
 #pragma region Fields

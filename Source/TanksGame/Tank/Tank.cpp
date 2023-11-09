@@ -71,3 +71,4 @@ void ATank::ProjectileDestroyed(AActor* DestroyedActor) {
 void ATank::MineDestroyed(AActor* DestroyedActor) {
 	MineCount--;
 }
+
