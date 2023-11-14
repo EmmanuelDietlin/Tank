@@ -31,27 +31,8 @@ void ALevelManager::Tick(float DeltaTime)
 	}
 	if (remainingTanks == 0) {
 		if (LevelEnded == false) {
-			if (IsLastLevel == false) {
-				OnNextLevelDelegate.Broadcast();
-			}
-			else {
-				OnVictoryDelegate.Broadcast();
-			}
+			OnNextLevelDelegate.Broadcast();
 			LevelEnded = true;
-		}
-		if (IsLastLevel == false) {
-			if (LevelChangeTimer >= NextLevelTimer) {
-				if (LevelStreamingEnabled == true) 
-				{
-					FLatentActionInfo LatentInfo;
-					UGameplayStatics::LoadStreamLevelBySoftObjectPtr(this, NextLevel, true, false, LatentInfo);
-				}
-				else 
-				{
-					UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
-				}
-			}
-			LevelChangeTimer += DeltaTime;
 		}
 	}
 	RemainingTanks = remainingTanks;
@@ -68,6 +49,30 @@ void ALevelManager::RestartLevel()
 	else 
 	{
 		UGameplayStatics::OpenLevel(this, FName(*CurrentLevel));
+	}
+}
+
+void ALevelManager::LoadNextLevel() 
+{
+	if (LevelStreamingEnabled == true)
+	{
+		FLatentActionInfo LatentInfo;
+		LatentInfo.CallbackTarget = this;
+		LatentInfo.ExecutionFunction = FName("UnloadCurrentLevel");
+		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(this, NextLevel, true, false, LatentInfo);
+	}
+	else
+	{
+		UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
+	}
+}
+
+void ALevelManager::UnloadCurrentLevel() 
+{
+	if (LevelStreamingEnabled == true) 
+	{
+		FLatentActionInfo LatentInfo;
+		UGameplayStatics::UnloadStreamLevel(this, FName(*CurrentLevel), LatentInfo, false);
 	}
 }
 

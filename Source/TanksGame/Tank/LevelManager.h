@@ -32,16 +32,19 @@ private:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void UnloadCurrentLevel();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+	UFUNCTION(BlueprintCallable)
+	void LoadNextLevel();
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Enemies")
 	TArray<TWeakObjectPtr<AEnemyTank>> EnemyTanks;
 
-	UPROPERTY(EditAnywhere, Category = "Level")
+	UPROPERTY(EditAnywhere, Category = "Level", Meta = (EditCondition = "LevelStreamingEnabled == false", EditConditionHides))
 	TSoftObjectPtr<UWorld> NextLevel;
 
 	UPROPERTY(BlueprintAssignable)
@@ -50,11 +53,8 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FNextLevelDelegate OnNextLevelDelegate;
 
-	UPROPERTY(EditAnywhere, Category = "Level")
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Level", Meta = (EditCondition = "LevelStreamingEnabled == false", EditConditionHides))
 	bool IsLastLevel = false;
-
-	UPROPERTY(EditAnywhere, Category = "Level")
-	float NextLevelTimer = 2;
 
 	UPROPERTY(EditAnywhere, Category = "Debug")
 	bool SwitchLevelOnComplete = true;
@@ -62,6 +62,6 @@ public:
 	UPROPERTY(BlueprintReadonly)
 	int RemainingTanks = 0;
 
-	UPROPERTY(EditAnywhere, Category = "Level")
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Level")
 	bool LevelStreamingEnabled = false;
 };
