@@ -20,11 +20,14 @@ class TANKSGAME_API ALevelManager : public AActor
 public:	
 	// Sets default values for this actor's properties
 	ALevelManager();
+	UFUNCTION(BlueprintCallable)
+	void RestartLevel();
 
 private:
 	FTimerHandle ChangeLevelTimer;
 	float LevelChangeTimer = 0;
 	bool LevelEnded = false;
+	FString CurrentLevel;
 
 protected:
 	// Called when the game starts or when spawned
@@ -38,7 +41,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Enemies")
 	TArray<TWeakObjectPtr<AEnemyTank>> EnemyTanks;
 
-	UPROPERTY(EditAnywhere, Category = "Next Level")
+	UPROPERTY(EditAnywhere, Category = "Level")
 	TSoftObjectPtr<UWorld> NextLevel;
 
 	UPROPERTY(BlueprintAssignable)
@@ -47,15 +50,18 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FNextLevelDelegate OnNextLevelDelegate;
 
-	UPROPERTY(EditAnywhere, Category = "Next Level")
+	UPROPERTY(EditAnywhere, Category = "Level")
 	bool IsLastLevel = false;
 
-	UPROPERTY(EditAnywhere, Category = "Next Level")
+	UPROPERTY(EditAnywhere, Category = "Level")
 	float NextLevelTimer = 2;
 
-	UPROPERTY(EditAnywhere, Category = "Next Level")
-	bool Debug = false;
+	UPROPERTY(EditAnywhere, Category = "Debug")
+	bool SwitchLevelOnComplete = true;
 
 	UPROPERTY(BlueprintReadonly)
 	int RemainingTanks = 0;
+
+	UPROPERTY(EditAnywhere, Category = "Level")
+	bool LevelStreamingEnabled = false;
 };
