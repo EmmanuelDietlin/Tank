@@ -42,6 +42,8 @@ public:
 	void TakeHit();
 	UFUNCTION(BlueprintCallable)
 	virtual int GetRemainingProjectileCount() { unimplemented(); return 0; };
+	UFUNCTION(BlueprintCallable)
+	virtual void TogglePause(bool Pause);
 #pragma endregion
 
 #pragma region Fields
@@ -87,5 +89,6 @@ protected:
 	float minePlaceTimer = 0;
 	int ProjectileCount = 0;
 	int MineCount = 0;
+	bool IsPaused = false;
 #pragma endregion
 };

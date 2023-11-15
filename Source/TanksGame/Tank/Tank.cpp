@@ -37,7 +37,6 @@ void ATank::BeginPlay()
 	}
 
 	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
-	
 }
 
 // Called every frame
@@ -70,5 +69,11 @@ void ATank::ProjectileDestroyed(AActor* DestroyedActor) {
 
 void ATank::MineDestroyed(AActor* DestroyedActor) {
 	MineCount--;
+}
+
+void ATank::TogglePause(bool Pause)
+{
+	IsPaused = Pause;
+	SetActorTickEnabled(!Pause);
 }
 

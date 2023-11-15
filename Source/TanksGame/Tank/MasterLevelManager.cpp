@@ -2,6 +2,8 @@
 
 #include "Kismet/GameplayStatics.h"
 #include "EnemyTank.h"
+#include "TimerManager.h"
+#include "Engine/World.h"
 #include "MasterLevelManager.h"
 
 // Sets default values
@@ -27,31 +29,88 @@ void AMasterLevelManager::Tick(float DeltaTime)
 
 }
 
-void AMasterLevelManager::LoadNextLevel() 
+void AMasterLevelManager::LoadNextLevel()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Load next level"));
+	FLatentActionInfo LatentInfo;
+	UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(), OrderedLevelsList[CurrentLevelIndex + 1], true, false, LatentInfo);
+	CurrentLevelIndex++;
+}
+
+void AMasterLevelManager::RestartLevel() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Unload current level"));
+	FLatentActionInfo LatentInfo;
+	LatentInfo.CallbackTarget = this;
+	LatentInfo.ExecutionFunction = FName(TEXT("LoadCurrentLevel"));
+	LatentInfo.UUID = 2;
+	LatentInfo.Linkage = 0;
+	UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(), OrderedLevelsList[CurrentLevelIndex], LatentInfo, false);
+}
+
+void AMasterLevelManager::LoadCurrentLevel() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("Reload current level"));
+	FLatentActionInfo LatentInfo;
+	UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(), OrderedLevelsList[CurrentLevelIndex], true, false, LatentInfo);
+}
+
+void AMasterLevelManager::UnloadCurrentLevel() 
+{
+	FLatentActionInfo LatentInfo;
+	UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(), OrderedLevelsList[CurrentLevelIndex], LatentInfo, true);
+}
+
+void AMasterLevelManager::NextLevel() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("erfererrerrererrererereer"));
+	if (OrderedLevelsList.Num() <= 0) return;
+	if (TimerHandle.IsValid()) 
+	{
+		GetWorldTimerManager().ClearTimer(TimerHandle);;
+	}
+	if (CurrentLevelIndex + 1 > OrderedLevelsList.Num()) {
+		OnVictoryDelegate.Broadcast();
+	}
+	else
+	{
+		FLatentActionInfo LatentInfo;
+		if (CurrentLevelIndex >= 0) {
+			LatentInfo.CallbackTarget = this;
+			LatentInfo.ExecutionFunction = FName(TEXT("LoadNextLevel"));
+			LatentInfo.UUID = 1;
+			LatentInfo.Linkage = 0;
+			UE_LOG(LogTemp, Warning, TEXT("Unload previous level"));
+			UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(), OrderedLevelsList[CurrentLevelIndex], LatentInfo, false);
+		}
+		else {
+			LoadNextLevel();
+		}
+		//if (CurrentLevelIndex > 0) {
+		//	FName MapName = OrderedLevelsList[CurrentLevelIndex - 1]->GetFName();
+		//	bool a = UGameplayStatics::GetStreamingLevel(this, MapName)->IsLevelLoaded();
+		//	UE_LOG(LogTemp, Warning, TEXT("fjnrejkeng : %i"), a);
+		//	UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(this, OrderedLevelsList[CurrentLevelIndex - 1], LatentInfo, false);
+		//	//UGameplayStatics::UnloadStreamLevel(this, MapName, LatentInfo, false);
+		//}
+	}
+}
+
+void AMasterLevelManager::NextLevelWithDelay(float Delay)
 {
 	if (OrderedLevelsList.Num() <= 0) return;
 	if (CurrentLevelIndex + 1 > OrderedLevelsList.Num()) {
 		OnVictoryDelegate.Broadcast();
 	}
-	else 
+	else
 	{
-		//Implémenter un timer pour démarrer le chargement après un certain délai
-		FLatentActionInfo LatentInfo;
-		LatentInfo.CallbackTarget = this;
-		LatentInfo.ExecutionFunction = FName("UnloadCurrentLevel");
-		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(this, OrderedLevelsList[CurrentLevelIndex + 1], true, false, LatentInfo);
+		GetWorldTimerManager().SetTimer(TimerHandle, this, &AMasterLevelManager::NextLevel, Delay, false);
 	}
 }
 
-
-
-void AMasterLevelManager::UnloadCurrentLevel()
+void AMasterLevelManager::LoadMainMenu() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("aaaa"));
-	if (OrderedLevelsList.Num() <= 0) return;
-	FLatentActionInfo LatentInfo;
-	UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(this, OrderedLevelsList[CurrentLevelIndex], LatentInfo, false);
-	CurrentLevelIndex++;
+	OnMainMenu.Broadcast();
 }
 
 int AMasterLevelManager::GetTanksCountForNextLevel() {
@@ -67,4 +126,5 @@ bool AMasterLevelManager::IsLastLevel()
 	return CurrentLevelIndex == OrderedLevelsList.Num();
 
 }
+
 

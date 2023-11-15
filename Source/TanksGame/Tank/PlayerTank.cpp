@@ -83,6 +83,7 @@ void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 }
 
 void APlayerTank::Move(const FInputActionValue& value) {
+	if (IsPaused == true) return;
 	if (fireTimer >= ((float)1 / FireRate - MovementStopAfterFire)) {
 		return;
 	}
@@ -98,6 +99,7 @@ void APlayerTank::Move(const FInputActionValue& value) {
 
 void APlayerTank::Fire(const FInputActionValue& value) 
 {
+	if (IsPaused == true) return;
 	if (fireTimer > 0 || ProjectileCount >= MaxProjectileCount) return;
 	fireTimer = (float)1 / FireRate;
 	UWorld* world = GetWorld();
@@ -122,6 +124,7 @@ void APlayerTank::Fire(const FInputActionValue& value)
 
 void APlayerTank::PlaceMine(const FInputActionValue& value) 
 {
+	if (IsPaused == true) return;
 	if (minePlaceTimer > 0 || MineCount >= MaxMineCount) return;
 	minePlaceTimer = MinePlaceDelay;
 	UWorld* world = GetWorld();
@@ -164,3 +167,4 @@ void APlayerTank::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 int APlayerTank::GetRemainingProjectileCount() {
 	return MaxProjectileCount - ProjectileCount;
 }
+

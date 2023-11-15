@@ -6,11 +6,14 @@
 #include "EnemyTank.h"
 #include "TankSaveGame.h"
 #include "Engine/EngineTypes.h"
+#include "MasterLevelManager.h"
+#include "PlayerTank.h"
 #include "GameFramework/Actor.h"
 #include "LevelManager.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVictoryDelegate);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNextLevelDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPauseDelegate, bool, Pause);
 
 UCLASS()
 class TANKSGAME_API ALevelManager : public AActor
@@ -28,17 +31,22 @@ private:
 	float LevelChangeTimer = 0;
 	bool LevelEnded = false;
 	FString CurrentLevel;
+	AMasterLevelManager* MasterLevelManager = nullptr;
+	APlayerTank* Player = nullptr;
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void UnloadCurrentLevel();
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable)
 	void LoadNextLevel();
+	UFUNCTION(BlueprintCallable)
+	void TogglePause(bool Pause);
+	UFUNCTION(BlueprintCallable)
+	void LoadMainMenu();
 
 public:
 	UPROPERTY(EditAnywhere, Category = "Enemies")
@@ -47,11 +55,17 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Level", Meta = (EditCondition = "LevelStreamingEnabled == false", EditConditionHides))
 	TSoftObjectPtr<UWorld> NextLevel;
 
+	UPROPERTY(EditAnywhere, Category = "Level", Meta = (EditCondition = "LevelStreamingEnabled == false", EditConditionHides))
+	TSoftObjectPtr<UWorld> MainMenu;
+	
 	UPROPERTY(BlueprintAssignable)
 	FVictoryDelegate OnVictoryDelegate;
 
 	UPROPERTY(BlueprintAssignable)
 	FNextLevelDelegate OnNextLevelDelegate;
+
+	UPROPERTY()
+	FPauseDelegate OnPauseDelegate;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Level", Meta = (EditCondition = "LevelStreamingEnabled == false", EditConditionHides))
 	bool IsLastLevel = false;

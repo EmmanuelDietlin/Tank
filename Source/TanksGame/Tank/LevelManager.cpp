@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "LevelManager.h"
+#include "EnemyTankController.h"
+#include "BrainComponent.h"
 #include "Kismet/GameplayStatics.h"
 
 // Sets default values
@@ -15,7 +17,8 @@ void ALevelManager::BeginPlay()
 {
 	Super::BeginPlay();
 	CurrentLevel = UGameplayStatics::GetCurrentLevelName(this);
-
+	MasterLevelManager = Cast<AMasterLevelManager>(UGameplayStatics::GetActorOfClass(this, AMasterLevelManager::StaticClass()));
+	Player = Cast<APlayerTank>(UGameplayStatics::GetActorOfClass(this, APlayerTank::StaticClass()));
 }
 
 // Called every frame
@@ -38,13 +41,58 @@ void ALevelManager::Tick(float DeltaTime)
 	RemainingTanks = remainingTanks;
 }
 
+void ALevelManager::TogglePause(bool Pause) 
+{
+	OnPauseDelegate.Broadcast(Pause);
+	for (auto it : EnemyTanks) {
+		if (it.IsValid()) {
+			it->TogglePause(Pause);
+			AEnemyTankController* controller = Cast<AEnemyTankController>(it->GetController());
+			if (controller != nullptr) {
+				if (Pause) {
+					controller->BrainComponent->PauseLogic(FString(TEXT("Game paused")));
+				}
+				else {
+					controller->BrainComponent->ResumeLogic(FString(TEXT("Game resumed")));
+				}	
+			}
+		}
+	}
+	if (Player == nullptr) {
+		Player = Cast<APlayerTank>(UGameplayStatics::GetActorOfClass(this, APlayerTank::StaticClass()));
+	}
+	if (Player != nullptr) {
+		Player->TogglePause(Pause);
+	}
+}
+
+void ALevelManager::LoadMainMenu() 
+{
+	if (LevelStreamingEnabled == true)
+	{
+		if (MasterLevelManager == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No master level manager found, one is needed when level streaming is enabled"));
+			return;
+		}
+		MasterLevelManager->NextLevel();
+	}
+	else
+	{
+		UGameplayStatics::OpenLevelBySoftObjectPtr(this, MainMenu);
+	}
+}
+
 void ALevelManager::RestartLevel() 
 {
 	if (LevelStreamingEnabled == true) 
 	{
-		FLatentActionInfo LatentInfo;
-		UGameplayStatics::UnloadStreamLevel(this, FName(*CurrentLevel), LatentInfo, false);
-		UGameplayStatics::LoadStreamLevel(this, FName(*CurrentLevel), true, false, LatentInfo);
+		if (MasterLevelManager == nullptr) 
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No master level manager found, one is needed when level streaming is enabled"));
+			return;
+		}
+		MasterLevelManager->RestartLevel();
 	}
 	else 
 	{
@@ -56,10 +104,12 @@ void ALevelManager::LoadNextLevel()
 {
 	if (LevelStreamingEnabled == true)
 	{
-		FLatentActionInfo LatentInfo;
-		LatentInfo.CallbackTarget = this;
-		LatentInfo.ExecutionFunction = FName("UnloadCurrentLevel");
-		UGameplayStatics::LoadStreamLevelBySoftObjectPtr(this, NextLevel, true, false, LatentInfo);
+		if (MasterLevelManager == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("No master level manager found, one is needed when level streaming is enabled"));
+			return;
+		}
+		MasterLevelManager->NextLevel();
 	}
 	else
 	{
@@ -67,12 +117,4 @@ void ALevelManager::LoadNextLevel()
 	}
 }
 
-void ALevelManager::UnloadCurrentLevel() 
-{
-	if (LevelStreamingEnabled == true) 
-	{
-		FLatentActionInfo LatentInfo;
-		UGameplayStatics::UnloadStreamLevel(this, FName(*CurrentLevel), LatentInfo, false);
-	}
-}
 

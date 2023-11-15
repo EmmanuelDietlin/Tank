@@ -3,6 +3,7 @@
 
 #include "Projectile.h"
 #include "Tank.h"
+#include "LevelManager.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -27,6 +28,12 @@ void AProjectile::BeginPlay()
 	shapeComponent->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);
 
 	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
+
+	ALevelManager* LevelManager = Cast<ALevelManager>(UGameplayStatics::GetActorOfClass(this, ALevelManager::StaticClass()));
+	if (LevelManager != nullptr)
+	{
+		LevelManager->OnPauseDelegate.AddDynamic(this, &AProjectile::ToggleTick);
+	}
 }
 
 // Called every frame
@@ -43,7 +50,11 @@ void AProjectile::Tick(float DeltaTime)
 	}
 	/*if (hit == nullptr) return;
 	UE_LOG(LogTemp, Warning, TEXT("Hit : %s"), *hit->ToString());*/
-	
+}
+
+void AProjectile::ToggleTick(bool Pause) 
+{
+	SetActorTickEnabled(!Pause);
 }
 
 void AProjectile::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {

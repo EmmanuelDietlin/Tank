@@ -126,5 +126,4 @@ int AEnemyTank::GetRemainingProjectileCount()
 	return (TanksData->TanksData[TankType].MaxProjectileCount - ProjectileCount);
 }
 
-
  

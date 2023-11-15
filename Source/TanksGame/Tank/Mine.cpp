@@ -3,6 +3,7 @@
 
 #include "Mine.h"
 #include "Tank.h"
+#include "LevelManager.h"
 #include "DestructibleWall.h"
 #include "Components/SphereComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -26,6 +27,17 @@ void AMine::BeginPlay()
 		return;
 	}
 	ExplosionSphere->SetSphereRadius(DefaultExplosionRadius);
+
+	ALevelManager* LevelManager = Cast<ALevelManager>(UGameplayStatics::GetActorOfClass(this, ALevelManager::StaticClass()));
+	if (LevelManager != nullptr)
+	{
+		LevelManager->OnPauseDelegate.AddDynamic(this, &AMine::ToggleTick);
+	}
+}
+
+void AMine::ToggleTick(bool Pause) 
+{
+	SetActorTickEnabled(!Pause);
 }
 
 // Called every frame
@@ -65,4 +77,6 @@ void AMine::Explode()
 	}
 	Destroy();
 }
+
+
 

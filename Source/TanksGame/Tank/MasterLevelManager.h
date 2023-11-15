@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Engine/EngineTypes.h"
-#include "LevelManager.h"
 #include "GameFramework/Actor.h"
 #include "MasterLevelManager.generated.h"
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVictoryDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FMainMenuDelegate);
 
 UCLASS()
 class TANKSGAME_API AMasterLevelManager : public AActor
@@ -21,7 +23,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-private:
+public:
+	UFUNCTION()
+	void LoadNextLevel();
+	UFUNCTION()
+	void LoadCurrentLevel();
 	UFUNCTION()
 	void UnloadCurrentLevel();
 
@@ -29,7 +35,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 	UFUNCTION(BlueprintCallable)
-	void LoadNextLevel();
+	void NextLevel();
+	UFUNCTION(BlueprintCallable)
+	void NextLevelWithDelay(float Delay);
+	UFUNCTION(BlueprintCallable)
+	void RestartLevel();
+	UFUNCTION()
+	void LoadMainMenu();
+
 	UFUNCTION(BlueprintCallable)
 	int GetTanksCountForNextLevel();
 	UFUNCTION(BlueprintCallable)
@@ -42,7 +55,11 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FVictoryDelegate OnVictoryDelegate;
 
+	UPROPERTY(BlueprintAssignable)
+	FMainMenuDelegate OnMainMenu;
+
 private:
 	int CurrentLevelIndex = -1;
+	FTimerHandle TimerHandle;
 
 };

@@ -19,6 +19,8 @@ protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintCallable)
 	void Explode();
+	UFUNCTION()
+	void ToggleTick(bool Pause);
 
 public:
 	// Called every frame
