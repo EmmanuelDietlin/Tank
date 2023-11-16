@@ -1,10 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "MasterLevelManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "EnemyTank.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
-#include "MasterLevelManager.h"
+
 
 // Sets default values
 AMasterLevelManager::AMasterLevelManager()
@@ -32,6 +33,10 @@ void AMasterLevelManager::Tick(float DeltaTime)
 void AMasterLevelManager::LoadNextLevel()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Load next level"));
+	if (CurrentLevelIndex < -1 || CurrentLevelIndex + 1 >= OrderedLevelsList.Num()) {
+		UE_LOG(LogTemp, Warning, TEXT("Index %i out of bounds of levels array"), CurrentLevelIndex);
+		return;
+	}
 	FLatentActionInfo LatentInfo;
 	UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(), OrderedLevelsList[CurrentLevelIndex + 1], true, false, LatentInfo);
 	CurrentLevelIndex++;
@@ -40,6 +45,10 @@ void AMasterLevelManager::LoadNextLevel()
 void AMasterLevelManager::RestartLevel() 
 {
 	UE_LOG(LogTemp, Warning, TEXT("Unload current level"));
+	if (CurrentLevelIndex < 0 || CurrentLevelIndex >= OrderedLevelsList.Num()) {
+		UE_LOG(LogTemp, Warning, TEXT("Index %i out of bounds of levels array"), CurrentLevelIndex);
+		return;
+	}
 	FLatentActionInfo LatentInfo;
 	LatentInfo.CallbackTarget = this;
 	LatentInfo.ExecutionFunction = FName(TEXT("LoadCurrentLevel"));
@@ -51,6 +60,10 @@ void AMasterLevelManager::RestartLevel()
 void AMasterLevelManager::LoadCurrentLevel() 
 {
 	UE_LOG(LogTemp, Warning, TEXT("Reload current level"));
+	if (CurrentLevelIndex < 0 || CurrentLevelIndex >= OrderedLevelsList.Num()) {
+		UE_LOG(LogTemp, Warning, TEXT("Index %i out of bounds of levels array"), CurrentLevelIndex);
+		return;
+	}
 	FLatentActionInfo LatentInfo;
 	UGameplayStatics::LoadStreamLevelBySoftObjectPtr(GetWorld(), OrderedLevelsList[CurrentLevelIndex], true, false, LatentInfo);
 }
@@ -58,18 +71,21 @@ void AMasterLevelManager::LoadCurrentLevel()
 void AMasterLevelManager::UnloadCurrentLevel() 
 {
 	FLatentActionInfo LatentInfo;
+	if (CurrentLevelIndex < 0 || CurrentLevelIndex >= OrderedLevelsList.Num()) {
+		UE_LOG(LogTemp, Warning, TEXT("Index %i out of bounds of levels array"), CurrentLevelIndex);
+		return;
+	}
 	UGameplayStatics::UnloadStreamLevelBySoftObjectPtr(GetWorld(), OrderedLevelsList[CurrentLevelIndex], LatentInfo, true);
 }
 
 void AMasterLevelManager::NextLevel() 
 {
-	UE_LOG(LogTemp, Warning, TEXT("erfererrerrererrererereer"));
 	if (OrderedLevelsList.Num() <= 0) return;
 	if (TimerHandle.IsValid()) 
 	{
 		GetWorldTimerManager().ClearTimer(TimerHandle);;
 	}
-	if (CurrentLevelIndex + 1 > OrderedLevelsList.Num()) {
+	if (CurrentLevelIndex + 1 >= OrderedLevelsList.Num()) {
 		OnVictoryDelegate.Broadcast();
 	}
 	else
@@ -99,7 +115,7 @@ void AMasterLevelManager::NextLevel()
 void AMasterLevelManager::NextLevelWithDelay(float Delay)
 {
 	if (OrderedLevelsList.Num() <= 0) return;
-	if (CurrentLevelIndex + 1 > OrderedLevelsList.Num()) {
+	if (CurrentLevelIndex + 1 >= OrderedLevelsList.Num()) {
 		OnVictoryDelegate.Broadcast();
 	}
 	else
@@ -111,14 +127,16 @@ void AMasterLevelManager::NextLevelWithDelay(float Delay)
 void AMasterLevelManager::LoadMainMenu() 
 {
 	OnMainMenu.Broadcast();
+	UnloadCurrentLevel();
+	CurrentLevelIndex = -1;
 }
 
 int AMasterLevelManager::GetTanksCountForNextLevel() {
-	//TODO => remplacer par le vrai compte !
-	//Deux solutions : 
-	// - 1 : Data avec lien entre nom niveau et nombre de tanks => facilité mais mise à jour peut être oubliée
-	//- 2 : Compter le nombre de tanks juste avant de loader le niveau => coût temporel possiblement important
-	return 1;
+	if (LevelsData == nullptr || CurrentLevelIndex + 1 >= OrderedLevelsList.Num() || CurrentLevelIndex < -1)
+		return 1;
+	//Récupération du nom de l'asset car GetName/GetFName font crasher si le niveau n'est pas chargé
+	FString name = OrderedLevelsList[CurrentLevelIndex + 1].GetAssetName();
+	return LevelsData->GetDataForLevel(name).TanksCount;
 }
 
 bool AMasterLevelManager::IsLastLevel() 

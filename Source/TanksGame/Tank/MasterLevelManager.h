@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/EngineTypes.h"
 #include "GameFramework/Actor.h"
+#include "LevelsData.h"
 #include "MasterLevelManager.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FVictoryDelegate);
@@ -57,6 +58,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FMainMenuDelegate OnMainMenu;
+
+	UPROPERTY(EditAnywhere, Category = "Levels")
+	ULevelsData* LevelsData;
 
 private:
 	int CurrentLevelIndex = -1;

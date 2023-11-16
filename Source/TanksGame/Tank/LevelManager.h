@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "EnemyTank.h"
 #include "TankSaveGame.h"
+#include "LevelsData.h"
 #include "Engine/EngineTypes.h"
 #include "MasterLevelManager.h"
 #include "PlayerTank.h"
@@ -37,6 +38,8 @@ private:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	virtual void PostLoad() override;
+	virtual void PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) override;
 
 public:	
 	// Called every frame
@@ -66,6 +69,9 @@ public:
 
 	UPROPERTY()
 	FPauseDelegate OnPauseDelegate;
+
+	UPROPERTY(EditAnywhere, Category = "Level")
+	ULevelsData* LevelsData;
 
 	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Level", Meta = (EditCondition = "LevelStreamingEnabled == false", EditConditionHides))
 	bool IsLastLevel = false;

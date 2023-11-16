@@ -75,5 +75,6 @@ void ATank::TogglePause(bool Pause)
 {
 	IsPaused = Pause;
 	SetActorTickEnabled(!Pause);
+	UE_LOG(LogTemp, Warning, TEXT("%s is %i"), *GetName(), Pause);
 }
 

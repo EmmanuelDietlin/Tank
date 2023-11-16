@@ -25,6 +25,7 @@ void ALevelManager::BeginPlay()
 void ALevelManager::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
 	if (SwitchLevelOnComplete == false) return;
 	int remainingTanks = 0;
 	for (int i = EnemyTanks.Num() - 1; i >= 0; i--) {
@@ -44,6 +45,7 @@ void ALevelManager::Tick(float DeltaTime)
 void ALevelManager::TogglePause(bool Pause) 
 {
 	OnPauseDelegate.Broadcast(Pause);
+	UE_LOG(LogTemp, Warning, TEXT("Pause"));
 	for (auto it : EnemyTanks) {
 		if (it.IsValid()) {
 			it->TogglePause(Pause);
@@ -75,7 +77,7 @@ void ALevelManager::LoadMainMenu()
 			UE_LOG(LogTemp, Warning, TEXT("No master level manager found, one is needed when level streaming is enabled"));
 			return;
 		}
-		MasterLevelManager->NextLevel();
+		MasterLevelManager->LoadMainMenu();
 	}
 	else
 	{
@@ -115,6 +117,23 @@ void ALevelManager::LoadNextLevel()
 	{
 		UGameplayStatics::OpenLevelBySoftObjectPtr(this, NextLevel);
 	}
+}
+
+//These two following methods set the number of tanks for each level in the corresponding data asset
+void ALevelManager::PostLoad() {
+#if WITH_EDITOR
+	Super::PostLoad();
+	CurrentLevel = UGameplayStatics::GetCurrentLevelName(this);
+	if (LevelsData == nullptr) return;
+	LevelsData->SetDataForLevel(UGameplayStatics::GetCurrentLevelName(this), EnemyTanks.Num());
+#endif
+}
+
+void ALevelManager::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) 
+{
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+	if (LevelsData == nullptr) return;
+	LevelsData->SetDataForLevel(*CurrentLevel, EnemyTanks.Num());
 }
 
 
