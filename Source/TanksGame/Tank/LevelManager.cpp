@@ -19,6 +19,7 @@ void ALevelManager::BeginPlay()
 	CurrentLevel = UGameplayStatics::GetCurrentLevelName(this);
 	MasterLevelManager = Cast<AMasterLevelManager>(UGameplayStatics::GetActorOfClass(this, AMasterLevelManager::StaticClass()));
 	Player = Cast<APlayerTank>(UGameplayStatics::GetActorOfClass(this, APlayerTank::StaticClass()));
+	RemainingTanks = EnemyTanks.Num();
 }
 
 // Called every frame
