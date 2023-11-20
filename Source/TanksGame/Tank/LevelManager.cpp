@@ -130,12 +130,14 @@ void ALevelManager::PostLoad() {
 #endif
 }
 
+#if WITH_EDITOR
 void ALevelManager::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent) 
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 	if (LevelsData == nullptr) return;
 	LevelsData->SetDataForLevel(*CurrentLevel, EnemyTanks.Num());
 }
+#endif
 
 
 

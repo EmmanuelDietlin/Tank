@@ -134,14 +134,13 @@ void AMasterLevelManager::LoadMainMenu()
 int AMasterLevelManager::GetTanksCountForNextLevel() {
 	if (LevelsData == nullptr || CurrentLevelIndex + 1 >= OrderedLevelsList.Num() || CurrentLevelIndex < -1)
 		return 1;
-	//Récupération du nom de l'asset car GetName/GetFName font crasher si le niveau n'est pas chargé
 	FString name = OrderedLevelsList[CurrentLevelIndex + 1].GetAssetName();
 	return LevelsData->GetDataForLevel(name).TanksCount;
 }
 
 bool AMasterLevelManager::IsLastLevel() 
 {
-	return CurrentLevelIndex == OrderedLevelsList.Num();
+	return CurrentLevelIndex >= OrderedLevelsList.Num() - 1;
 
 }
 
