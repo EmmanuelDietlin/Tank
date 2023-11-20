@@ -44,6 +44,10 @@ public:
 	virtual int GetRemainingProjectileCount() { unimplemented(); return 0; };
 	UFUNCTION(BlueprintCallable)
 	virtual void TogglePause(bool Pause);
+	UFUNCTION(BlueprintCallable)
+	void SetTurretRotation(FRotator TargetRotation);
+	UFUNCTION(BlueprintCallable)
+	void SetBodyRotation(FRotator TargetRotation);
 #pragma endregion
 
 #pragma region Fields

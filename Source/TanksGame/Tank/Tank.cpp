@@ -78,3 +78,17 @@ void ATank::TogglePause(bool Pause)
 	UE_LOG(LogTemp, Warning, TEXT("%s is %i"), *GetName(), Pause);
 }
 
+void ATank::SetTurretRotation(FRotator TargetRotation) {
+	if (Turret == nullptr) return;
+	TargetRotation.Roll = 0;
+	TargetRotation.Pitch = 0;
+	Turret->SetRelativeRotation(TargetRotation);
+}
+
+void ATank::SetBodyRotation(FRotator TargetRotation) {
+	if (Body == nullptr) return;
+	TargetRotation.Roll = 0;
+	TargetRotation.Pitch = 0;
+	Body->SetRelativeRotation(TargetRotation);
+}
+

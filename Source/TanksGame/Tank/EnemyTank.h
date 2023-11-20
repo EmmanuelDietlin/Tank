@@ -31,9 +31,8 @@ public:
 	FRotator GetTurretRotation();
 	UFUNCTION(BlueprintCallable)
 	void RotateTurret(FRotator TargetRotation, double DeltaTime);
-	UFUNCTION(BlueprintCallable)
-	void SetTurretRotation(FRotator TargetRotation);
 	int GetRemainingProjectileCount() override;
+	void TogglePause(bool Pause) override;
 #pragma endregion
 
 #pragma region Fields

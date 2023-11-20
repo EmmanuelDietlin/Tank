@@ -35,6 +35,7 @@ private:
 	FString CurrentLevel;
 	AMasterLevelManager* MasterLevelManager = nullptr;
 	APlayerTank* Player = nullptr;
+	TArray<TWeakObjectPtr<AEnemyTank>> EnemyTanks;
 
 protected:
 	// Called when the game starts or when spawned
@@ -55,9 +56,6 @@ public:
 	void LoadMainMenu();
 
 public:
-	UPROPERTY(EditAnywhere, Category = "Enemies")
-	TArray<TWeakObjectPtr<AEnemyTank>> EnemyTanks;
-
 	UPROPERTY(EditAnywhere, Category = "Level", Meta = (EditCondition = "LevelStreamingEnabled == false", EditConditionHides))
 	TSoftObjectPtr<UWorld> NextLevel;
 

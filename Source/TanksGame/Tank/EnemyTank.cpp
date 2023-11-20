@@ -1,4 +1,6 @@
 #include "EnemyTank.h"
+#include "EnemyTankController.h"
+#include "BrainComponent.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -112,18 +114,25 @@ void AEnemyTank::RotateTurret(FRotator TargetRotation, double DeltaTime) {
 	Turret->SetWorldRotation(turretRotation);
 }
 
-void AEnemyTank::SetTurretRotation(FRotator TargetRotation) {
-	if (Turret == nullptr) return;
-	TargetRotation.Roll = 0;
-	TargetRotation.Pitch = 0;
-	Turret->SetRelativeRotation(TargetRotation);
-}
-
 int AEnemyTank::GetRemainingProjectileCount()
 {
 	if (TanksData == nullptr || TanksData->TanksData.Contains(TankType) == false) return 0;
 
 	return (TanksData->TanksData[TankType].MaxProjectileCount - ProjectileCount);
+}
+
+void AEnemyTank::TogglePause(bool Pause) 
+{
+	Super::TogglePause(Pause);
+	AEnemyTankController* controller = Cast<AEnemyTankController>(GetController());
+	if (controller != nullptr) {
+		if (Pause) {
+			controller->BrainComponent->PauseLogic(FString(TEXT("Game paused")));
+		}
+		else {
+			controller->BrainComponent->ResumeLogic(FString(TEXT("Game resumed")));
+		}
+	}
 }
 
  

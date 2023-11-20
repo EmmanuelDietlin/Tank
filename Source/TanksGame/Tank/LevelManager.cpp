@@ -20,6 +20,15 @@ void ALevelManager::BeginPlay()
 	MasterLevelManager = Cast<AMasterLevelManager>(UGameplayStatics::GetActorOfClass(this, AMasterLevelManager::StaticClass()));
 	Player = Cast<APlayerTank>(UGameplayStatics::GetActorOfClass(this, APlayerTank::StaticClass()));
 	RemainingTanks = EnemyTanks.Num();
+	TArray<AActor*> enemyTanks;
+	UGameplayStatics::GetAllActorsOfClass(this, AEnemyTank::StaticClass(), enemyTanks);
+	for (auto it : enemyTanks) 
+	{
+		AEnemyTank* tank = Cast<AEnemyTank>(it);
+		tank->TogglePause(true);
+		EnemyTanks.Add(TWeakObjectPtr<AEnemyTank>(tank));
+		
+	}
 }
 
 // Called every frame
@@ -46,19 +55,9 @@ void ALevelManager::Tick(float DeltaTime)
 void ALevelManager::TogglePause(bool Pause) 
 {
 	OnPauseDelegate.Broadcast(Pause);
-	UE_LOG(LogTemp, Warning, TEXT("Pause"));
-	for (auto it : EnemyTanks) {
+	for (auto& it : EnemyTanks) {
 		if (it.IsValid()) {
 			it->TogglePause(Pause);
-			AEnemyTankController* controller = Cast<AEnemyTankController>(it->GetController());
-			if (controller != nullptr) {
-				if (Pause) {
-					controller->BrainComponent->PauseLogic(FString(TEXT("Game paused")));
-				}
-				else {
-					controller->BrainComponent->ResumeLogic(FString(TEXT("Game resumed")));
-				}	
-			}
 		}
 	}
 	if (Player == nullptr) {
