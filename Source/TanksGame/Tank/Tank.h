@@ -78,7 +78,6 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FTankDestroyedDelegate OnTankDestroyed;
 
-
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
 	class UStaticMeshComponent* Body = nullptr;
