@@ -6,6 +6,7 @@
 #include "EnemyTank.h"
 #include "TankSaveGame.h"
 #include "LevelsData.h"
+#include "Camera/CameraActor.h"
 #include "Engine/EngineTypes.h"
 #include "MasterLevelManager.h"
 #include "PlayerTank.h"
