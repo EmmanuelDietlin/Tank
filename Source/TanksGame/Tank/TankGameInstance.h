@@ -30,7 +30,7 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int Lives = 4;
 
-	UPROPERTY(BlueprintReadonly)
+	UPROPERTY(BlueprintReadWrite)
 	int MaxLives = 4;
 
 	UPROPERTY(BlueprintReadWrite)
