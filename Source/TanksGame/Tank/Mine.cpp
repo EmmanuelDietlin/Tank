@@ -64,12 +64,14 @@ void AMine::Explode()
 	}
 	TArray<AActor*> overlappingActors;
 	ExplosionSphere->GetOverlappingActors(overlappingActors);
-	for (const auto& it : overlappingActors) {
-		if (ATank* tank = Cast<ATank>(it)) {
-			tank->TakeHit();
-		}
-		else if (ADestructibleWall* wall = Cast<ADestructibleWall>(it)) {
-			wall->TakeHit();
+	if (GetLocalRole() == ROLE_Authority) {
+		for (const auto& it : overlappingActors) {
+			if (ATank* tank = Cast<ATank>(it)) {
+				tank->TakeHit();
+			}
+			else if (ADestructibleWall* wall = Cast<ADestructibleWall>(it)) {
+				wall->TakeHit();
+			}
 		}
 	}
 	if (ExplosionSound != nullptr && TankGameInstance != nullptr) {

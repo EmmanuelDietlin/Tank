@@ -19,6 +19,10 @@ class TANKSGAME_API AEnemyTank : public ATank
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	UFUNCTION(Server, Reliable)
+	void HandlePlaceMine();
+	UFUNCTION(Server, Reliable)
+	void HandleFire();
 
 public:
 	UFUNCTION(BlueprintCallable)

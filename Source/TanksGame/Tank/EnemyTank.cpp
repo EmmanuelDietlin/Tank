@@ -49,8 +49,13 @@ void AEnemyTank::Tick(float DeltaTime) {
 
 void AEnemyTank::Fire()
 {
+	HandleFire();
+}
+
+void AEnemyTank::HandleFire_Implementation() 
+{
 	if (TanksData == nullptr || TanksData->TanksData.Contains(TankType) == false) return;
-	if(fireTimer > 0 || ProjectileCount >= TanksData->TanksData[TankType].MaxProjectileCount) return;
+	if (fireTimer > 0 || ProjectileCount >= TanksData->TanksData[TankType].MaxProjectileCount) return;
 	fireTimer = (float)1 / TanksData->TanksData[TankType].FireRate;
 	UWorld* world = GetWorld();
 	if (world == nullptr) return;
@@ -71,6 +76,11 @@ void AEnemyTank::Fire()
 }
 
 void AEnemyTank::PlaceMine()
+{
+	HandlePlaceMine();
+}
+
+void AEnemyTank::HandlePlaceMine_Implementation() 
 {
 	if (TanksData == nullptr || TanksData->TanksData.Contains(TankType) == false) return;
 	if (minePlaceTimer > 0 || MineCount >= TanksData->TanksData[TankType].MaxMineCount) return;

@@ -40,9 +40,13 @@ private:
 
 	//Function to fire a projectile
 	void Fire(const FInputActionValue& value);
+	UFUNCTION(Server, Reliable)
+	void HandleFire();
 
 	//Function to place a mine 
 	void PlaceMine(const FInputActionValue& value);
+	UFUNCTION(Server, Reliable)
+	void HandlePlaceMine();
 
 	//Function triggered on hit
 	UFUNCTION()

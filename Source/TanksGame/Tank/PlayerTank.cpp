@@ -99,6 +99,11 @@ void APlayerTank::Move(const FInputActionValue& value) {
 
 void APlayerTank::Fire(const FInputActionValue& value) 
 {
+	HandleFire();
+}
+
+void APlayerTank::HandleFire_Implementation() 
+{
 	if (IsPaused == true) return;
 	if (fireTimer > 0 || ProjectileCount >= MaxProjectileCount) return;
 	fireTimer = (float)1 / FireRate;
@@ -123,6 +128,11 @@ void APlayerTank::Fire(const FInputActionValue& value)
 }
 
 void APlayerTank::PlaceMine(const FInputActionValue& value) 
+{
+	HandlePlaceMine();
+}
+
+void APlayerTank::HandlePlaceMine_Implementation() 
 {
 	if (IsPaused == true) return;
 	if (minePlaceTimer > 0 || MineCount >= MaxMineCount) return;

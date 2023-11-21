@@ -48,6 +48,11 @@ public:
 	void SetTurretRotation(FRotator TargetRotation);
 	UFUNCTION(BlueprintCallable)
 	void SetBodyRotation(FRotator TargetRotation);
+
+	/*UFUNCTION(Server, Reliable)
+	virtual void HandleFire();
+	UFUNCTION(Server, Reliable)
+	virtual void HandlePlaceMine();*/
 #pragma endregion
 
 #pragma region Fields
