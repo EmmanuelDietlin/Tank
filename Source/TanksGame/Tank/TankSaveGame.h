@@ -6,6 +6,20 @@
 #include "GameFramework/SaveGame.h"
 #include "TankSaveGame.generated.h"
 
+
+USTRUCT(BlueprintType)
+struct FPlayerInfos 
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString PlayerName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int MaxScore;
+};
+
 /**
  * 
  */
@@ -15,22 +29,19 @@ class TANKSGAME_API UTankSaveGame : public USaveGame
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Basic")
-	FString PlayerName;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Basic")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Basic")
 	FString SaveSlotName;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Basic")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Basic")
+	FPlayerInfos PlayerInfos;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Basic")
 	int UserIndex;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Basic")
-	int MaxScore;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Basic")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Basic")
 	float SoundVolume = 1 UMETA(ClampMin = "0", ClampMax = "1");
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Basic")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Basic")
 	float MusicVolume = 1 UMETA(ClampMin = "0", ClampMax = "1");
 
 	UTankSaveGame();
