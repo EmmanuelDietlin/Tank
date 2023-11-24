@@ -37,6 +37,8 @@ protected:
 private:
 	//Function to move the tank forward
 	void Move(const FInputActionValue& value);
+	UFUNCTION(Server, Reliable)
+	void HandleRotations(FRotator TurretTargetRotation, FQuat BodyTargetRotation, double DeltaTime);
 
 	//Function to fire a projectile
 	void Fire(const FInputActionValue& value);

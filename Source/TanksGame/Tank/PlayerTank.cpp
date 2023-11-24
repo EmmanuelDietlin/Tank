@@ -41,10 +41,10 @@ void APlayerTank::Tick(float DeltaTime)
 	}
 	FVector turretWorldLoc = Turret->GetComponentLocation();
 	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(turretWorldLoc, MousePosition);
-	FRotator turretRotation = UKismetMathLibrary::RInterpTo_Constant(Turret->GetComponentRotation(), targetRotation, DeltaTime, TurretRotationSpeed);
+	/*FRotator turretRotation = UKismetMathLibrary::RInterpTo_Constant(Turret->GetComponentRotation(), targetRotation, DeltaTime, TurretRotationSpeed);
 	turretRotation.SetComponentForAxis(EAxis::X, 0);
 	turretRotation.SetComponentForAxis(EAxis::Y, 0);
-	Turret->SetWorldRotation(turretRotation);
+	Turret->SetWorldRotation(turretRotation);*/
 
 
 	if (Body == nullptr) {
@@ -55,8 +55,9 @@ void APlayerTank::Tick(float DeltaTime)
 	FRotator nextRotation = FRotator::ZeroRotator;
 	nextRotation.SetComponentForAxis(EAxis::Z, ZRotationSpeed * DeltaTime);
 	currentRotation *= nextRotation.Quaternion();
-	Body->SetWorldRotation(currentRotation);
+	/*Body->SetWorldRotation(currentRotation);*/
 
+	HandleRotations(targetRotation, currentRotation, DeltaTime);
 	ZRotationSpeed = 0;
 
 }
@@ -95,6 +96,16 @@ void APlayerTank::Move(const FInputActionValue& value) {
 	FVector forward = Body->GetForwardVector();
 	AddMovementInput(forward, vector.Y * ForwardSpeed);
 	ZRotationSpeed = vector.X * RotationSpeed;
+}
+
+void APlayerTank::HandleRotations_Implementation(FRotator TurretTargetRotation, FQuat BodyTargetRotation, double DeltaTime)
+{
+	FRotator turretRotation = UKismetMathLibrary::RInterpTo_Constant(Turret->GetComponentRotation(), TurretTargetRotation, DeltaTime, TurretRotationSpeed);
+	turretRotation.SetComponentForAxis(EAxis::X, 0);
+	turretRotation.SetComponentForAxis(EAxis::Y, 0);
+	Turret->SetWorldRotation(turretRotation);
+
+	Body->SetWorldRotation(BodyTargetRotation);
 }
 
 void APlayerTank::Fire(const FInputActionValue& value) 
