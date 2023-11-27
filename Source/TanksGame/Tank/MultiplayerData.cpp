@@ -14,6 +14,10 @@ FMapData UMultiplayerData::GetMapData(EMapType MapType, int Index) {
 		if (Index < 0 || Index >= VersusMapsList.Num())
 			return FMapData();
 		return VersusMapsList[Index];
+	case EMapType::CampaignMapType:
+		if (Index < 0 || Index >= CampaignMapsList.Num())
+			return FMapData();
+		return CampaignMapsList[Index];
 	default:
 		return FMapData();
 	}
@@ -26,6 +30,8 @@ int UMultiplayerData::GetMapListSize(EMapType MapType) {
 		return CoopMapsList.Num();
 	case EMapType::VersusMapType:
 		return VersusMapsList.Num();
+	case EMapType::CampaignMapType:
+		return CampaignMapsList.Num();
 	default:
 		return 0;
 	}

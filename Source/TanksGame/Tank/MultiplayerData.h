@@ -11,7 +11,8 @@ UENUM(BlueprintType)
 enum EMapType 
 {
 	CoopMapType UMETA(DisplayName = "CoopMapType"),
-	VersusMapType UMETA(DisplayName = "VersusMapType")
+	VersusMapType UMETA(DisplayName = "VersusMapType"),
+	CampaignMapType UMETA(DisplayNale = "Campaign")
 };
 
 USTRUCT(BlueprintType)
@@ -45,6 +46,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Maps")
 	TArray<FMapData> VersusMapsList;
+
+	UPROPERTY(EditAnywhere, Category = "Maps")
+	TArray<FMapData> CampaignMapsList;
 
 public:
 	UFUNCTION(BlueprintCallable)
