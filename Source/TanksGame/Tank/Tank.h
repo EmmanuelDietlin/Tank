@@ -87,6 +87,9 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FTankDestroyedDelegate OnTankDestroyed;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool IsPaused = false;
+
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
 	class UStaticMeshComponent* Body = nullptr;
@@ -97,6 +100,5 @@ protected:
 	float minePlaceTimer = 0;
 	int ProjectileCount = 0;
 	int MineCount = 0;
-	bool IsPaused = false;
 #pragma endregion
 };

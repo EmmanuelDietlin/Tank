@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Sound/SoundWave.h"
 #include "TankGameInstance.h"
+#include "TankGameMode.h"
 #include "GameFramework/Actor.h"
 #include "Projectile.generated.h"
 
@@ -23,6 +24,8 @@ protected:
 	void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 	UFUNCTION()
 	void ToggleTick(bool Pause);
+	UFUNCTION()
+	void BeginDestroy() override;
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -49,5 +52,6 @@ public:
 protected:
 	UPROPERTY(BlueprintReadonly)
 	UTankGameInstance* TankGameInstance = nullptr;
+	ATankGameMode* TankGameMode;
 #pragma endregion
 };

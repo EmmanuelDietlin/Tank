@@ -7,26 +7,29 @@
 #include "LevelsData.generated.h"
 
 
-USTRUCT()
+USTRUCT(BlueprintType)
 struct FLevelData 
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, BlueprintReadonly)
+	TSoftObjectPtr<UWorld> Level;
+
+	UPROPERTY(EditAnywhere, BlueprintReadonly)
 	int TanksCount;
 };
 
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class TANKSGAME_API ULevelsData : public UDataAsset
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere)
-	TMap<TSoftObjectPtr<UWorld>, FLevelData> LevelsData;
+	UPROPERTY(EditAnywhere, BlueprintReadonly)
+	TArray<FLevelData> LevelsData;
 	
 
 public:

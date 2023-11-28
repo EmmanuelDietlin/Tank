@@ -5,12 +5,11 @@
 
 void ULevelsData::SetDataForLevel(FString LevelName, int value) 
 {
-	for (auto& [key, val] : LevelsData) 
+	for (auto& it : LevelsData) 
 	{
-		if (key.IsNull() == true) continue;
-		if (key.GetAssetName() == LevelName) 
+		if (it.Level.GetAssetName() == LevelName) 
 		{
-			val.TanksCount = value;
+			it.TanksCount = value;
 			break;
 		}
 	}
@@ -18,12 +17,11 @@ void ULevelsData::SetDataForLevel(FString LevelName, int value)
 
 FLevelData ULevelsData::GetDataForLevel(FString LevelName)
 {
-	for (auto& [key, val] : LevelsData)
+	for (auto& it : LevelsData)
 	{
-		if (key.IsNull() == true) continue;
-		if (key.GetAssetName() == LevelName)
+		if (it.Level.GetAssetName() == LevelName)
 		{
-			return val;
+			return it;
 		}
 	}
 	return FLevelData();

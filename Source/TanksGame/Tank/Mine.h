@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Components/SphereComponent.h"
 #include "TankGameInstance.h"
+#include "TankGameMode.h"
 #include "GameFramework/Actor.h"
 #include "Mine.generated.h"
 
@@ -21,6 +22,8 @@ protected:
 	void Explode();
 	UFUNCTION()
 	void ToggleTick(bool Pause);
+	UFUNCTION()
+	void BeginDestroy() override;
 
 public:
 	// Called every frame
@@ -53,7 +56,7 @@ private:
 	float mineTimer = 0;
 	USphereComponent* ExplosionSphere;
 	UTankGameInstance* TankGameInstance = nullptr;
-
+	ATankGameMode* TankGameMode;
 
 #pragma endregion
 

@@ -37,6 +37,8 @@ void ATank::BeginPlay()
 	}
 
 	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
+
+	TogglePause(true);
 }
 
 // Called every frame

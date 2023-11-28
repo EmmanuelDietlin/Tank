@@ -54,7 +54,6 @@ void ALevelManager::Tick(float DeltaTime)
 
 void ALevelManager::TogglePause(bool Pause) 
 {
-	OnPauseDelegate.Broadcast(Pause);
 	for (auto& it : EnemyTanks) {
 		if (it.IsValid()) {
 			it->TogglePause(Pause);

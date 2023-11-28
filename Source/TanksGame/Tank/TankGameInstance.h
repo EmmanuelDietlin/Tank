@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
+#include "LevelsData.h"
 #include "TankGameInstance.generated.h"
 
 /**
@@ -35,5 +36,6 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	int LevelNumber = 1;
+
 	
 };

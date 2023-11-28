@@ -15,7 +15,6 @@
 
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FNextLevelDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FPauseDelegate, bool, Pause);
 
 UCLASS()
 class TANKSGAME_API ALevelManager : public AActor
@@ -67,9 +66,6 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FNextLevelDelegate OnNextLevelDelegate;
-
-	UPROPERTY()
-	FPauseDelegate OnPauseDelegate;
 
 	UPROPERTY(EditAnywhere, Category = "Level")
 	ULevelsData* LevelsData;

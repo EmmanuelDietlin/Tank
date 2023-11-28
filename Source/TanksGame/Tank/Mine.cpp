@@ -28,10 +28,10 @@ void AMine::BeginPlay()
 	}
 	ExplosionSphere->SetSphereRadius(DefaultExplosionRadius);
 
-	ALevelManager* LevelManager = Cast<ALevelManager>(UGameplayStatics::GetActorOfClass(this, ALevelManager::StaticClass()));
-	if (LevelManager != nullptr)
+	TankGameMode = Cast<ATankGameMode>(UGameplayStatics::GetGameMode(this));
+	if (TankGameMode != nullptr)
 	{
-		LevelManager->OnPauseDelegate.AddDynamic(this, &AMine::ToggleTick);
+		TankGameMode->OnTogglePauseDelegate.AddDynamic(this, &AMine::ToggleTick);
 	}
 }
 
@@ -53,6 +53,15 @@ void AMine::Tick(float DeltaTime)
 
 	if (mineTimer > MineExplosionDelay) {
 		Explode();
+	}
+}
+
+void AMine::BeginDestroy() 
+{
+	Super::BeginDestroy();
+	if (TankGameMode != nullptr)
+	{
+		TankGameMode->OnTogglePauseDelegate.RemoveDynamic(this, &AMine::ToggleTick);
 	}
 }
 

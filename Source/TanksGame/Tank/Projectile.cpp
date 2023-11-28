@@ -29,10 +29,10 @@ void AProjectile::BeginPlay()
 
 	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
 
-	ALevelManager* LevelManager = Cast<ALevelManager>(UGameplayStatics::GetActorOfClass(this, ALevelManager::StaticClass()));
-	if (LevelManager != nullptr)
+	TankGameMode = Cast<ATankGameMode>(UGameplayStatics::GetGameMode(this));
+	if (TankGameMode != nullptr)
 	{
-		LevelManager->OnPauseDelegate.AddDynamic(this, &AProjectile::ToggleTick);
+		TankGameMode->OnTogglePauseDelegate.AddDynamic(this, &AProjectile::ToggleTick);
 	}
 }
 
@@ -56,6 +56,16 @@ void AProjectile::ToggleTick(bool Pause)
 {
 	SetActorTickEnabled(!Pause);
 }
+
+void AProjectile::BeginDestroy() 
+{
+	Super::BeginDestroy();
+	if(TankGameMode != nullptr)
+	{
+		TankGameMode->OnTogglePauseDelegate.RemoveDynamic(this, &AProjectile::ToggleTick);
+	}
+}
+
 
 void AProjectile::OverlapBegin(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 	/*if (ATank* tank = Cast<ATank>(OtherActor)) {
