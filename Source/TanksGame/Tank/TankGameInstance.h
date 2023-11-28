@@ -35,7 +35,5 @@ public:
 	int MaxLives = 4;
 
 	UPROPERTY(BlueprintReadWrite)
-	int LevelNumber = 1;
-
-	
+	int LevelNumber = 0;
 };
