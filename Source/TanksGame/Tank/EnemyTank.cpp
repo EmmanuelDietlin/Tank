@@ -153,11 +153,89 @@ void AEnemyTank::TogglePause(bool Pause)
 
 void AEnemyTank::TakeHit(AActor* SourceActor) 
 {
+	if (SourceActor == nullptr) return;
 	APlayerTank* Player = Cast<APlayerTank>(SourceActor);
 	if (Player == nullptr) return;
 	ATankPlayerController* tankController = Cast<ATankPlayerController>(Player->Controller);
 	if (Controller == nullptr) return;
 	Controller->PlayerState->SetScore(Controller->PlayerState->GetScore() + 1);
+}
+
+void AEnemyTank::SetPlayersArray(TArray<APlayerTank*> Players)
+{
+	for (auto it : Players) 
+	{
+		PlayerTanks.Add(it);
+	}
+}
+
+void AEnemyTank::AddPlayerToArray(APlayerTank* Player) 
+{
+	PlayerTanks.Add(Player);
+}
+
+void AEnemyTank::RemovePlayerFromArrayAtIndex(int Index)
+{
+	PlayerTanks.RemoveAt(Index);
+}
+
+void AEnemyTank::RemovePlayerFromArray(APlayerTank* Player) 
+{
+	PlayerTanks.Remove(Player);
+}
+
+void AEnemyTank::ClearPlayersArray() 
+{
+	PlayerTanks.Empty();
+}
+
+APlayerTank* AEnemyTank::GetPlayerFromArray(int Index)
+{
+	if (Index < 0 || Index >= PlayerTanks.Num()) return nullptr;
+	return PlayerTanks[Index].Get();
+}
+
+APlayerTank* AEnemyTank::GetRandomPlayerFromArray() 
+{
+	int Index = std::rand() % PlayerTanks.Num();
+	return PlayerTanks[Index].Get();
+}
+
+APlayerTank* AEnemyTank::GetClosestPlayerFromArray() 
+{
+	float MinDistance = MAX_flt;
+	int index = -1;;
+	for (int i = PlayerTanks.Num() - 1; i >= 0; i--) 
+	{
+		if (PlayerTanks[i].IsValid() == false)
+		{
+			PlayerTanks.RemoveAt(i);
+			continue;
+		}
+		float distance = FVector::Dist(GetActorLocation(), PlayerTanks[i]->GetTargetLocation());
+		if (distance < MinDistance) {
+			MinDistance = distance;
+			index = i;
+		}
+	}
+	if (index < 0) return nullptr;
+	return PlayerTanks[index].Get();
+}
+
+int AEnemyTank::GetPlayersArrayLength() 
+{
+	return PlayerTanks.Num();
+}
+
+void AEnemyTank::UpdatePlayersArray() 
+{
+	for (int i = PlayerTanks.Num() - 1; i >= 0; i--) 
+	{
+		if (PlayerTanks[i].IsValid() == false) 
+		{
+			PlayerTanks.RemoveAt(i);
+		}
+	}
 }
 
  

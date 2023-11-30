@@ -37,6 +37,27 @@ public:
 	void RotateTurret(FRotator TargetRotation, double DeltaTime);
 	int GetRemainingProjectileCount() override;
 	void TogglePause(bool Pause) override;
+
+	UFUNCTION(BlueprintCallable)
+	void SetPlayersArray(TArray<APlayerTank*> Players);
+	UFUNCTION(BlueprintCallable)
+	void AddPlayerToArray(APlayerTank* Player);
+	UFUNCTION(BlueprintCallable)
+	void RemovePlayerFromArray(APlayerTank* Player);
+	UFUNCTION(BlueprintCallable)
+	void RemovePlayerFromArrayAtIndex(int Index);
+	UFUNCTION(BlueprintCallable)
+	void ClearPlayersArray();
+	UFUNCTION(BlueprintCallable)
+	APlayerTank* GetPlayerFromArray(int Index);
+	UFUNCTION(BlueprintCallable)
+	APlayerTank* GetRandomPlayerFromArray();
+	UFUNCTION(BlueprintCallable)
+	APlayerTank* GetClosestPlayerFromArray();
+	UFUNCTION(BlueprintCallable)
+	int GetPlayersArrayLength();
+	UFUNCTION(BlueprintCallable)
+	void UpdatePlayersArray();
 #pragma endregion
 
 #pragma region Fields
@@ -50,11 +71,9 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	FVector NextPosition = FVector::ZeroVector;
 
-	UPROPERTY(BlueprintReadWrite)
-	TWeakObjectPtr<APlayerTank> PlayerTank;
-
 private:
 	UTankGameInstance* TankGameInstance;
+	TArray<TWeakObjectPtr<APlayerTank>> PlayerTanks;
 #pragma endregion
 };
 
