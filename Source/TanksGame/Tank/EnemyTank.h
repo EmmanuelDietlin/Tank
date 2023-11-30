@@ -23,7 +23,7 @@ protected:
 	void HandlePlaceMine();
 	UFUNCTION(Server, Reliable)
 	void HandleFire();
-
+	void TakeHit(AActor* SourceActor) override;
 public:
 	UFUNCTION(BlueprintCallable)
 	void Fire();

@@ -8,6 +8,7 @@
 #include "Components/CapsuleComponent.h"
 #include "InputMappingContext.h"
 #include "InputAction.h"
+#include "TankPlayerController.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "PlayerTank.generated.h"

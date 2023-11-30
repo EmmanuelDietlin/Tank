@@ -54,7 +54,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void ATank::TakeHit()
+void ATank::TakeHit(AActor* SourceActor)
 {
 	if (ExplosionSound != nullptr && TankGameInstance != nullptr) {
 		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankGameInstance->SoundVolume);

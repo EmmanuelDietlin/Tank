@@ -48,6 +48,8 @@ public:
 	int Bounces = 1;
 	UPROPERTY(BlueprintReadonly)
 	TArray<FString> TargetTags = { "Enemy" };
+	UPROPERTY(BlueprintReadonly)
+	AActor* SpawningActor;
 
 protected:
 	UPROPERTY(BlueprintReadonly)

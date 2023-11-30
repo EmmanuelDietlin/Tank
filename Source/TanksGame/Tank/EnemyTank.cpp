@@ -1,6 +1,9 @@
 #include "EnemyTank.h"
 #include "EnemyTankController.h"
 #include "BrainComponent.h"
+#include "PlayerTank.h"
+#include "TankPlayerController.h"
+#include "GameFramework/PlayerState.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "Kismet/GameplayStatics.h"
 
@@ -15,6 +18,7 @@ void AEnemyTank::BeginPlay() {
 	if (TankGameInstance == nullptr) {
 		UE_LOG(LogTemp, Warning, TEXT("Game instance is not of type UTankGameInstance"));
 	}
+	TogglePause(true);
 }
 
 void AEnemyTank::Tick(float DeltaTime) {
@@ -62,6 +66,7 @@ void AEnemyTank::HandleFire_Implementation()
 	if (ProjectileSpawnPoint == nullptr) return;
 
 	AProjectile* bullet = Cast<AProjectile>(world->SpawnActor(TanksData->TanksData[TankType].Projectile));
+	bullet->SpawningActor = this;
 	bullet->SetActorLocationAndRotation(
 		ProjectileSpawnPoint->GetComponentLocation(),
 		Turret->GetComponentQuat());
@@ -94,6 +99,7 @@ void AEnemyTank::HandlePlaceMine_Implementation()
 	if (MineData->Mines[MineType].Mine == nullptr) return;
 
 	AMine* mine = Cast<AMine>(world->SpawnActor(MineData->Mines[MineType].Mine));
+	mine->SpawningActor = this;
 	mine->SetActorLocation(MineSpawnPoint->GetComponentLocation());
 	mine->MineExplosionDelay = MineData->Mines[MineType].MineExplosionDelay;
 	mine->EnemyTags = TanksData->TanksData[TankType].EnemyTags;
@@ -143,6 +149,15 @@ void AEnemyTank::TogglePause(bool Pause)
 			controller->BrainComponent->ResumeLogic(FString(TEXT("Game resumed")));
 		}
 	}
+}
+
+void AEnemyTank::TakeHit(AActor* SourceActor) 
+{
+	APlayerTank* Player = Cast<APlayerTank>(SourceActor);
+	if (Player == nullptr) return;
+	ATankPlayerController* tankController = Cast<ATankPlayerController>(Player->Controller);
+	if (Controller == nullptr) return;
+	Controller->PlayerState->SetScore(Controller->PlayerState->GetScore() + 1);
 }
 
  

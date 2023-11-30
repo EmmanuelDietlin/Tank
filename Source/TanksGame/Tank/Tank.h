@@ -3,11 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Projectile.h"
 #include "TankGameInstance.h"
 #include "Components/AudioComponent.h"
 #include "Sound/SoundWave.h"
 #include "MinesData.h"
+#include "Projectile.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
 #include "Tank.generated.h"
@@ -39,7 +39,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UFUNCTION(BlueprintCallable)
-	void TakeHit();
+	virtual void TakeHit(AActor* SourceActor);
 	UFUNCTION(BlueprintCallable)
 	virtual int GetRemainingProjectileCount() { unimplemented(); return 0; };
 	UFUNCTION(BlueprintCallable)

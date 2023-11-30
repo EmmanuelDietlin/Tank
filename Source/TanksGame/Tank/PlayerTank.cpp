@@ -123,6 +123,7 @@ void APlayerTank::HandleFire_Implementation()
 	if (ProjectileSpawnPoint == nullptr) return;
 
 	AProjectile* bullet = Cast<AProjectile>(world->SpawnActor(Projectile));
+	bullet->SpawningActor = this;
 	bullet->SetActorLocationAndRotation(
 		ProjectileSpawnPoint->GetComponentLocation(),
 		Turret->GetComponentQuat());
@@ -157,6 +158,7 @@ void APlayerTank::HandlePlaceMine_Implementation()
 	if (MineData->Mines[MineType].Mine == nullptr) return;
 
 	AMine* mine = Cast<AMine>(world->SpawnActor(MineData->Mines[MineType].Mine));
+	mine->SpawningActor = this;
 	mine->SetActorLocation(MineSpawnPoint->GetComponentLocation());
 	mine->MineExplosionDelay = MineData->Mines[MineType].MineExplosionDelay;
 	mine->EnemyTags = EnemyTags;

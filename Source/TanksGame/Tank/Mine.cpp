@@ -76,7 +76,7 @@ void AMine::Explode()
 	if (GetLocalRole() == ROLE_Authority) {
 		for (const auto& it : overlappingActors) {
 			if (ATank* tank = Cast<ATank>(it)) {
-				tank->TakeHit();
+				tank->TakeHit(SpawningActor);
 			}
 			else if (ADestructibleWall* wall = Cast<ADestructibleWall>(it)) {
 				wall->TakeHit();
