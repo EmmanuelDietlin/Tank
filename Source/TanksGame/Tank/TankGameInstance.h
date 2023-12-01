@@ -7,6 +7,29 @@
 #include "LevelsData.h"
 #include "TankGameInstance.generated.h"
 
+
+UENUM(BlueprintType)
+enum EMultiplayerVersusModeType 
+{
+	Timer UMETA(DisplayName = "Timer"),
+	Lives UMETA(DisplayName = "Lives")
+};
+
+USTRUCT(BlueprintType)
+struct FVersusGameData
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite)
+	TEnumAsByte<EMultiplayerVersusModeType> VersusModeType;
+
+	UPROPERTY(BlueprintReadWrite)
+	int Lives;
+
+	UPROPERTY(BlueprintReadWrite)
+	int TimerSeconds;
+};
 /**
  * 
  */
@@ -36,4 +59,7 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	int LevelNumber = 0;
+	
+	UPROPERTY(BlueprintReadWrite)
+	FVersusGameData VersusGameData;
 };
