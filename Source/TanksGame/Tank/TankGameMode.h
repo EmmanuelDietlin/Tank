@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "TankGameInstance.h"
 #include "GameFramework/GameModeBase.h"
 #include "TankGameMode.generated.h"
 
@@ -22,5 +23,10 @@ public:
 public:
 	UFUNCTION(BlueprintCallable)
 	void ToggleWeaponPause(bool Pause);
+	UFUNCTION(BlueprintCallable)
+	TArray<FVersusPlayerInfos> MergeSortArray(const TArray<FVersusPlayerInfos>& Array, bool Ascending);
+
+private:
+	TArray<FVersusPlayerInfos> MergeArray(const TArray<FVersusPlayerInfos>& LeftArray, const TArray<FVersusPlayerInfos>& RightArray, bool Ascending);
 	
 };

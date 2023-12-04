@@ -51,7 +51,7 @@ public:
 
 	float MineExplosionDelay = 2;
 	float ExplosionRadius = 1;
-	AActor* SpawningActor = nullptr;
+	AActor* SpawningActor;
 
 private:
 	float mineTimer = 0;

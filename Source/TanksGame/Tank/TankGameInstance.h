@@ -30,6 +30,23 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int TimerSeconds;
 };
+
+USTRUCT(BlueprintType)
+struct FVersusPlayerInfos 
+{
+	GENERATED_BODY()
+
+public:
+	UPROPERTY(BlueprintReadWrite)
+	FString PlayerName;
+
+	UPROPERTY(BlueprintReadWrite)
+	int Score;
+
+	UPROPERTY(BlueprintReadWrite)
+	int Lives;
+
+};
 /**
  * 
  */

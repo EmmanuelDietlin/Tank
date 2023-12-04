@@ -13,6 +13,7 @@
 #include "Tank.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDestroyedDelegate);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTankDestroyedByActorDelegate, AActor*, SourceActor);
 
 UCLASS(Abstract)
 class TANKSGAME_API ATank : public ACharacter
@@ -86,6 +87,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FTankDestroyedDelegate OnTankDestroyed;
+
+	UPROPERTY(BlueprintAssignable)
+	FTankDestroyedByActorDelegate OnTankDestroyedByActor;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool IsPaused = false;

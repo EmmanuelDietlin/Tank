@@ -123,7 +123,7 @@ void APlayerTank::HandleFire_Implementation()
 	if (ProjectileSpawnPoint == nullptr) return;
 
 	AProjectile* bullet = Cast<AProjectile>(world->SpawnActor(Projectile));
-	bullet->SpawningActor = this;
+	bullet->SpawningActor = this->Controller;
 	bullet->SetActorLocationAndRotation(
 		ProjectileSpawnPoint->GetComponentLocation(),
 		Turret->GetComponentQuat());
@@ -148,7 +148,6 @@ void APlayerTank::HandlePlaceMine_Implementation()
 {
 	if (IsPaused == true) return;
 	if (minePlaceTimer > 0 || MineCount >= MaxMineCount) return;
-	minePlaceTimer = MinePlaceDelay;
 	UWorld* world = GetWorld();
 
 	if (world == nullptr) return;
@@ -157,8 +156,13 @@ void APlayerTank::HandlePlaceMine_Implementation()
 	if (MineData->Mines.Contains(MineType) == false) return;
 	if (MineData->Mines[MineType].Mine == nullptr) return;
 
+	minePlaceTimer = MinePlaceDelay;
 	AMine* mine = Cast<AMine>(world->SpawnActor(MineData->Mines[MineType].Mine));
-	mine->SpawningActor = this;
+	if (mine == nullptr) {
+		UE_LOG(LogTemp, Warning, TEXT("Could not spawn mine"));
+		return;
+	}
+	mine->SpawningActor = this->Controller;
 	mine->SetActorLocation(MineSpawnPoint->GetComponentLocation());
 	mine->MineExplosionDelay = MineData->Mines[MineType].MineExplosionDelay;
 	mine->EnemyTags = EnemyTags;
