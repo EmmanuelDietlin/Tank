@@ -50,6 +50,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Maps")
 	TArray<FMapData> CampaignMapsList;
 
+	UPROPERTY(EditAnywhere, BlueprintReadonly, Category = "Visuals")
+	TArray<UMaterialInterface*> PlayerColors;
+
 public:
 	UFUNCTION(BlueprintCallable)
 	FMapData GetMapData(EMapType MapType, int Index);

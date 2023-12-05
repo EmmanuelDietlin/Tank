@@ -13,7 +13,7 @@
 #include "Tank.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDestroyedDelegate);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FTankDestroyedByActorDelegate, AActor*, SourceActor);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FTankDestroyedByActorDelegate, AActor*, SourceActor, AActor*, DestroyedActor);
 
 UCLASS(Abstract)
 class TANKSGAME_API ATank : public ACharacter

@@ -17,7 +17,7 @@ TArray<FVersusPlayerInfos> ATankGameMode::MergeSortArray(const TArray<FVersusPla
 	TArray<FVersusPlayerInfos> left, right;
 	int half = Array.Num() / 2;
 	for (int i = 0; i < Array.Num(); i++) {
-		if (i <= half) left.Add(Array[i]);
+		if (i < half) left.Add(Array[i]);
 		else right.Add(Array[i]);
 	}
 

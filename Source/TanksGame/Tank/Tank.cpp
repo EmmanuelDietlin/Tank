@@ -60,7 +60,7 @@ void ATank::TakeHit(AActor* SourceActor)
 		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankGameInstance->SoundVolume);
 	}
 	OnTankDestroyed.Broadcast();
-	OnTankDestroyedByActor.Broadcast(SourceActor);
+	OnTankDestroyedByActor.Broadcast(SourceActor, this->Controller);
 	bool e = Destroy();
 }
 

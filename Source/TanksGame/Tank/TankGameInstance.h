@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Engine/GameInstance.h"
 #include "LevelsData.h"
+#include "MultiplayerData.h"
 #include "TankGameInstance.generated.h"
 
 
