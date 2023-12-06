@@ -110,11 +110,13 @@ void APlayerTank::HandleRotations_Implementation(FRotator TurretTargetRotation, 
 
 void APlayerTank::Fire(const FInputActionValue& value) 
 {
+	UE_LOG(LogTemp, Warning, TEXT("Pressed fire"));
 	HandleFire();
 }
 
 void APlayerTank::HandleFire_Implementation() 
 {
+	UE_LOG(LogTemp, Warning, TEXT("is paused : %i"), IsPaused);
 	if (IsPaused == true) return;
 	if (fireTimer > 0 || ProjectileCount >= MaxProjectileCount) return;
 	fireTimer = (float)1 / FireRate;
@@ -141,11 +143,13 @@ void APlayerTank::HandleFire_Implementation()
 
 void APlayerTank::PlaceMine(const FInputActionValue& value) 
 {
+	UE_LOG(LogTemp, Warning, TEXT("Pressed place mine"));
 	HandlePlaceMine();
 }
 
 void APlayerTank::HandlePlaceMine_Implementation() 
 {
+	UE_LOG(LogTemp, Warning, TEXT("is paused : %i"), IsPaused);
 	if (IsPaused == true) return;
 	if (minePlaceTimer > 0 || MineCount >= MaxMineCount) return;
 	UWorld* world = GetWorld();

@@ -39,6 +39,9 @@ struct FVersusPlayerInfos
 
 public:
 	UPROPERTY(BlueprintReadWrite)
+	int Id;
+
+	UPROPERTY(BlueprintReadWrite)
 	FString PlayerName;
 
 	UPROPERTY(BlueprintReadWrite)
