@@ -81,6 +81,4 @@ public:
 	UPROPERTY(BlueprintReadWrite)
 	int LevelNumber = 0;
 	
-	UPROPERTY(BlueprintReadWrite)
-	FVersusGameData VersusGameData;
 };
