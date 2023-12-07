@@ -80,5 +80,5 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	int LevelNumber = 0;
-	
+
 };

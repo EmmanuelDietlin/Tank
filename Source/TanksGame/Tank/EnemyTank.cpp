@@ -151,8 +151,14 @@ void AEnemyTank::TogglePause(bool Pause)
 	}
 }
 
-void AEnemyTank::TakeHit(AActor* SourceActor) 
+void AEnemyTank::HandleTakeHit_Implementation(AActor* SourceActor)
 {
+	if (ExplosionSound != nullptr && TankGameInstance != nullptr) {
+		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankGameInstance->SoundVolume);
+	}
+	OnTankDestroyed.Broadcast();
+	OnTankDestroyedByActor.Broadcast(SourceActor, this->Controller);
+	bool e = Destroy();
 	if (SourceActor == nullptr) return;
 	APlayerTank* Player = Cast<APlayerTank>(SourceActor);
 	if (Player == nullptr) return;

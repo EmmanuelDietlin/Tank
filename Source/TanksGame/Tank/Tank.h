@@ -32,6 +32,8 @@ protected:
 	void ProjectileDestroyed(AActor* DestroyedActor);
 	UFUNCTION()
 	void MineDestroyed(AActor* DestroyedActor);
+	UFUNCTION(Server, Reliable)
+	virtual void HandleTakeHit(AActor* SourceActor);
 
 public:	
 	// Called every frame
@@ -40,7 +42,8 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	UFUNCTION(BlueprintCallable)
-	virtual void TakeHit(AActor* SourceActor);
+	void TakeHit(AActor* SourceActor);
+
 	UFUNCTION(BlueprintCallable)
 	virtual int GetRemainingProjectileCount() { unimplemented(); return 0; };
 	UFUNCTION(BlueprintCallable)
