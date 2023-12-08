@@ -32,7 +32,7 @@ void AEnemyTank::Tick(float DeltaTime) {
 	if (NextPosition.Equals(FVector::ZeroVector)) return;
 
 	//Forward movement
-	if (fireTimer < ((float)1 / TanksData->TanksData[TankType].FireRate - MovementStopAfterFire)) {
+	if (PauseAfterShoot <= 0) {
 		FVector forward = Body->GetForwardVector();
 		AddMovementInput(forward, TanksData->TanksData[TankType].TankForwardSpeed);
 	}
@@ -61,6 +61,7 @@ void AEnemyTank::HandleFire_Implementation()
 	if (TanksData == nullptr || TanksData->TanksData.Contains(TankType) == false) return;
 	if (fireTimer > 0 || ProjectileCount >= TanksData->TanksData[TankType].MaxProjectileCount) return;
 	fireTimer = (float)1 / TanksData->TanksData[TankType].FireRate;
+	PauseAfterShoot = MovementStopAfterFire;
 	UWorld* world = GetWorld();
 	if (world == nullptr) return;
 	if (ProjectileSpawnPoint == nullptr) return;

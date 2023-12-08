@@ -45,6 +45,7 @@ void ATank::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (fireTimer > 0) fireTimer -= DeltaTime;
 	if (minePlaceTimer > 0) minePlaceTimer -= DeltaTime;
+	if (PauseAfterShoot > 0) PauseAfterShoot -= DeltaTime;
 }
 
 // Called to bind functionality to input

@@ -107,5 +107,6 @@ protected:
 	float minePlaceTimer = 0;
 	int ProjectileCount = 0;
 	int MineCount = 0;
+	float PauseAfterShoot = 0;
 #pragma endregion
 };

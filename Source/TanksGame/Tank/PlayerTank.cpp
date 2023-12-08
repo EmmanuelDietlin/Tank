@@ -85,7 +85,7 @@ void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 
 void APlayerTank::Move(const FInputActionValue& value) {
 	if (IsPaused == true) return;
-	if (fireTimer >= ((float)1 / FireRate - MovementStopAfterFire)) {
+	if (PauseAfterShoot > 0) {
 		return;
 	}
 	FVector2d vector = value.Get<FVector2d>();
@@ -123,6 +123,8 @@ void APlayerTank::HandleFire_Implementation()
 	UWorld* world = GetWorld();
 	if (world == nullptr) return;
 	if (ProjectileSpawnPoint == nullptr) return;
+
+	PauseAfterShoot = MovementStopAfterFire;
 
 	AProjectile* bullet = Cast<AProjectile>(world->SpawnActor(Projectile));
 	bullet->SpawningActor = this->Controller;
