@@ -48,6 +48,7 @@ void ATank::Tick(float DeltaTime)
 	if (PauseAfterShoot > 0) PauseAfterShoot -= DeltaTime;
 }
 
+
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {

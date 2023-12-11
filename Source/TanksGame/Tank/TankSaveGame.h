@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GenericPlatform/GenericWindow.h"
 #include "GameFramework/SaveGame.h"
 #include "TankSaveGame.generated.h"
 
@@ -44,6 +45,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Basic")
 	float MusicVolume = 1 UMETA(ClampMin = "0", ClampMax = "1");
 
+public:
 	UTankSaveGame();
 	
 };
