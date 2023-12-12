@@ -30,6 +30,9 @@ public:
 
 	UPROPERTY(BlueprintReadWrite)
 	int TimerSeconds;
+
+	UPROPERTY(BlueprintReadWrite)
+	float InvicibilityDuration;
 };
 
 USTRUCT(BlueprintType)

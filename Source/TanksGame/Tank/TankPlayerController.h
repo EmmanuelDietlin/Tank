@@ -13,5 +13,5 @@ UCLASS()
 class TANKSGAME_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
-	
+
 };

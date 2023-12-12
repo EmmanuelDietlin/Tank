@@ -76,18 +76,21 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::TakeHit(AActor* SourceActor)
 {
-	HandleTakeHit(SourceActor);
+	if (CanBeDestroyed)
+	{
+		HandleTakeHit(SourceActor);
+	}
 }
 
-//void ATank::HandleTakeHit_Implementation(AActor* SourceActor) 
-//{
-//	if (ExplosionSound != nullptr && TankGameInstance != nullptr) {
-//		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankGameInstance->SoundVolume);
-//	}
-//	OnTankDestroyed.Broadcast();
-//	OnTankDestroyedByActor.Broadcast(SourceActor, this->Controller);
-//	bool e = Destroy();
-//}
+void ATank::HandleTakeHit_Implementation(AActor* SourceActor) 
+{
+	if (ExplosionSound != nullptr && TankGameInstance != nullptr) {
+		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankGameInstance->SoundVolume);
+	}
+	OnTankDestroyed.Broadcast();
+	OnTankDestroyedByActor.Broadcast(SourceActor, this->Controller);
+	bool e = Destroy();
+}
 
 void ATank::ProjectileDestroyed(AActor* DestroyedActor) {
 	ProjectileCount--;

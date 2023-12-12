@@ -104,6 +104,9 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	bool IsPaused = false;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
+	bool CanBeDestroyed = true;
+
 protected:
 	class UStaticMeshComponent* Turret = nullptr;
 	class UStaticMeshComponent* Body = nullptr;
