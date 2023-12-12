@@ -9,7 +9,9 @@
 ATank::ATank()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;}
+	PrimaryActorTick.bCanEverTick = true;
+	//OnCalculateCustomPhysics.BindUObject(this, &ATank::CustomPhysics);
+}
 
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
@@ -37,6 +39,7 @@ void ATank::BeginPlay()
 	}
 
 	TankGameInstance = Cast<UTankGameInstance>(UGameplayStatics::GetGameInstance(this));
+	Root = Cast<UCapsuleComponent>(GetRootComponent());
 }
 
 // Called every frame
@@ -46,7 +49,22 @@ void ATank::Tick(float DeltaTime)
 	if (fireTimer > 0) fireTimer -= DeltaTime;
 	if (minePlaceTimer > 0) minePlaceTimer -= DeltaTime;
 	if (PauseAfterShoot > 0) PauseAfterShoot -= DeltaTime;
+
+	/*if (Root != nullptr && Root->GetBodyInstance() != nullptr) 
+	{
+		Root->GetBodyInstance()->AddCustomPhysics(OnCalculateCustomPhysics);
+	}*/
 }
+//
+//void ATank::CustomPhysics(float DeltaTime, FBodyInstance* BodyInstance) 
+//{
+//	PhysicsTick(DeltaTime);
+//}
+//
+//void ATank::PhysicsTick_Implementation(float SubstepDeltaTime) 
+//{
+//	
+//}
 
 
 // Called to bind functionality to input
@@ -61,15 +79,15 @@ void ATank::TakeHit(AActor* SourceActor)
 	HandleTakeHit(SourceActor);
 }
 
-void ATank::HandleTakeHit_Implementation(AActor* SourceActor) 
-{
-	if (ExplosionSound != nullptr && TankGameInstance != nullptr) {
-		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankGameInstance->SoundVolume);
-	}
-	OnTankDestroyed.Broadcast();
-	OnTankDestroyedByActor.Broadcast(SourceActor, this->Controller);
-	bool e = Destroy();
-}
+//void ATank::HandleTakeHit_Implementation(AActor* SourceActor) 
+//{
+//	if (ExplosionSound != nullptr && TankGameInstance != nullptr) {
+//		UGameplayStatics::PlaySound2D(this, ExplosionSound, ExplosionSoundVolume * TankGameInstance->SoundVolume);
+//	}
+//	OnTankDestroyed.Broadcast();
+//	OnTankDestroyedByActor.Broadcast(SourceActor, this->Controller);
+//	bool e = Destroy();
+//}
 
 void ATank::ProjectileDestroyed(AActor* DestroyedActor) {
 	ProjectileCount--;

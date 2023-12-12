@@ -8,6 +8,7 @@
 #include "Sound/SoundWave.h"
 #include "MinesData.h"
 #include "Projectile.h"
+#include "Components/CapsuleComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "GameFramework/Character.h"
 #include "Tank.generated.h"
@@ -38,6 +39,12 @@ protected:
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
+
+	/*UFUNCTION(BlueprintNativeEvent)
+	void PhysicsTick(float SubstepDeltaTime);
+	virtual void PhysicsTick_Implementation(float SubstepDeltaTime);
+	FCalculateCustomPhysics OnCalculateCustomPhysics;
+	void CustomPhysics(float DeltaTime, FBodyInstance* BodyInstance);*/
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -103,6 +110,7 @@ protected:
 	class UStaticMeshComponent* ProjectileSpawnPoint = nullptr;
 	class UStaticMeshComponent* MineSpawnPoint = nullptr;
 	class UTankGameInstance* TankGameInstance = nullptr;
+	class UCapsuleComponent* Root = nullptr;
 	float fireTimer = 0;
 	float minePlaceTimer = 0;
 	int ProjectileCount = 0;
