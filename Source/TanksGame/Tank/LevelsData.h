@@ -35,4 +35,6 @@ public:
 public:
 	void SetDataForLevel(FString LevelName, int value);
 	FLevelData GetDataForLevel(FString LevelName);
+	UFUNCTION(BlueprintCallable)
+	int GetLevelIndex(FString LevelName);
 };

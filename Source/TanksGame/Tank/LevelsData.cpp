@@ -26,3 +26,15 @@ FLevelData ULevelsData::GetDataForLevel(FString LevelName)
 	}
 	return FLevelData();
 }
+
+int ULevelsData::GetLevelIndex(FString LevelName) 
+{
+	for (int i = 0; i < LevelsData.Num(); i++) 
+	{
+		if (LevelsData[i].Level.GetAssetName() == LevelName)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
