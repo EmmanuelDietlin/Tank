@@ -109,7 +109,6 @@ void APlayerTank::Rotate(const FInputActionValue& value)
 	FVector2d Rotation = value.Get<FVector2d>();
 	float Angle = FMath::Atan(Rotation.Y / Rotation.X);
 	float degAngle = Angle * 360 / (2 * PI);
-	UE_LOG(LogTemp, Warning, TEXT("befor correction angle : %f"), degAngle);
 	if (Rotation.X < 0)
 	{
 		degAngle += 180;
@@ -118,8 +117,8 @@ void APlayerTank::Rotate(const FInputActionValue& value)
 	{
 		degAngle += 360;
 	}
+	//To take into account the fact that the turret is facing the Y axis by default
 	degAngle += 90;
-	UE_LOG(LogTemp, Warning, TEXT("angle : %f"), degAngle);
 	TargetTurretRotation = FRotator(degAngle, degAngle, degAngle);
 
 }
