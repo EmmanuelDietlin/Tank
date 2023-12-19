@@ -1,11 +1,31 @@
 #include "PlayerTank.h"
+#include "RawInput.h"
+#include "RawInputFunctionLibrary.h"
+#include "IInputDeviceModule.h"
+#include "IInputDevice.h"
+#include "GenericPlatform/GenericApplicationMessageHandler.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
+APlayerTank::APlayerTank() 
+{
+	
+	FCoreDelegates::OnControllerConnectionChange.AddUObject(this, &APlayerTank::ListenForControllerChange);
+}
+
 void APlayerTank::BeginPlay() 
 {
 	Super::BeginPlay();
+
+	IRawInput* RawInput = static_cast<IRawInput*>(static_cast<FRawInputPlugin*>(&FRawInputPlugin::Get())->GetRawInputDevice().Get());
+
+	if (RawInput != nullptr) {
+
+		RawInput->QueryConnectedDevices();
+
+		OnControllerConnection(false);
+	}
 
 	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	if (PlayerController == nullptr) {
@@ -33,18 +53,17 @@ void APlayerTank::Tick(float DeltaTime)
 	if (Turret == nullptr) return;
 
 	FHitResult hitResult;
-	if (PlayerController->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult) == false) {
-		return;
+	if (ControlledByGamepad == false) 
+	{
+		if (PlayerController->GetHitResultUnderCursorByChannel(ETraceTypeQuery::TraceTypeQuery1, true, hitResult) == false) {
+			return;
+		}
+		if (MousePosition != hitResult.Location) {
+			MousePosition = hitResult.Location;
+		}
+		FVector turretWorldLoc = Turret->GetComponentLocation();
+		TargetTurretRotation = UKismetMathLibrary::FindLookAtRotation(turretWorldLoc, MousePosition);
 	}
-	if (MousePosition != hitResult.Location) {
-		MousePosition = hitResult.Location;
-	}
-	FVector turretWorldLoc = Turret->GetComponentLocation();
-	FRotator targetRotation = UKismetMathLibrary::FindLookAtRotation(turretWorldLoc, MousePosition);
-	/*FRotator turretRotation = UKismetMathLibrary::RInterpTo_Constant(Turret->GetComponentRotation(), targetRotation, DeltaTime, TurretRotationSpeed);
-	turretRotation.SetComponentForAxis(EAxis::X, 0);
-	turretRotation.SetComponentForAxis(EAxis::Y, 0);
-	Turret->SetWorldRotation(turretRotation);*/
 
 
 	if (Body == nullptr) {
@@ -57,7 +76,7 @@ void APlayerTank::Tick(float DeltaTime)
 	currentRotation *= nextRotation.Quaternion();
 	/*Body->SetWorldRotation(currentRotation);*/
 
-	HandleRotations(targetRotation, currentRotation, DeltaTime);
+	HandleRotations(TargetTurretRotation, currentRotation, DeltaTime);
 	ZRotationSpeed = 0;
 
 }
@@ -81,6 +100,28 @@ void APlayerTank::SetupPlayerInputComponent(class UInputComponent* PlayerInputCo
 	playerEIcomponent->BindAction(MoveAction, ETriggerEvent::Triggered, this, &APlayerTank::Move);
 	playerEIcomponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &APlayerTank::Fire);
 	playerEIcomponent->BindAction(PlaceMineAction, ETriggerEvent::Triggered, this, &APlayerTank::PlaceMine);
+	playerEIcomponent->BindAction(RotateAction, ETriggerEvent::Triggered, this, &APlayerTank::Rotate);
+}
+
+void APlayerTank::Rotate(const FInputActionValue& value) 
+{
+	if (IsPaused == true) return;
+	FVector2d Rotation = value.Get<FVector2d>();
+	float Angle = FMath::Atan(Rotation.Y / Rotation.X);
+	float degAngle = Angle * 360 / (2 * PI);
+	UE_LOG(LogTemp, Warning, TEXT("befor correction angle : %f"), degAngle);
+	if (Rotation.X < 0)
+	{
+		degAngle += 180;
+	}
+	else if (Rotation.Y < 0)
+	{
+		degAngle += 360;
+	}
+	degAngle += 90;
+	UE_LOG(LogTemp, Warning, TEXT("angle : %f"), degAngle);
+	TargetTurretRotation = FRotator(degAngle, degAngle, degAngle);
+
 }
 
 void APlayerTank::Move(const FInputActionValue& value) {
@@ -199,5 +240,14 @@ void APlayerTank::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 
 int APlayerTank::GetRemainingProjectileCount() {
 	return MaxProjectileCount - ProjectileCount;
+}
+
+void APlayerTank::ListenForControllerChange(bool isConnected, FPlatformUserId UserId, int32 userId) 
+{
+	IRawInput* RawInput = static_cast<IRawInput*>(static_cast<FRawInputPlugin*>(&FRawInputPlugin::Get())->GetRawInputDevice().Get());
+
+	RawInput->QueryConnectedDevices();
+
+	OnControllerConnection(isConnected);
 }
 

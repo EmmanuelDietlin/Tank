@@ -24,6 +24,7 @@ class TANKSGAME_API APlayerTank : public ATank
 #pragma region Methods
 public:
 	// Called every frame
+	APlayerTank();
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
@@ -31,11 +32,19 @@ public:
 
 	int GetRemainingProjectileCount() override;
 
+	void ListenForControllerChange(bool isConnected, FPlatformUserId UserId, int32 userId);
+
+	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Controller Events") 
+	void OnControllerConnection(bool IsConnected);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
+	//Function to rotate the turret when a controller is used
+	void Rotate(const FInputActionValue& value);
+
 	//Function to move the tank forward
 	void Move(const FInputActionValue& value);
 	UFUNCTION(Server, Reliable)
@@ -63,6 +72,7 @@ private:
 	FVector MousePosition;
 	UCapsuleComponent* Collision = nullptr;
 	UCharacterMovementComponent* CharacterMovement = nullptr;
+	FRotator TargetTurretRotation = FRotator::ZeroRotator;
 
 	float ZRotationSpeed = 0;
 
@@ -108,6 +118,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Inputs")
 	class UInputAction* PlaceMineAction;
+
+	UPROPERTY(EditAnywhere, Category = "Inputs")
+	class UInputAction* RotateAction;
+
+	UPROPERTY(BlueprintReadWrite)
+	bool ControlledByGamepad = false;
 
 #pragma endregion
 };
