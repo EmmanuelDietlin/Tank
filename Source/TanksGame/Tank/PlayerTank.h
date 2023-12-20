@@ -122,7 +122,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Inputs")
 	class UInputAction* RotateAction;
 
-	UPROPERTY(BlueprintReadWrite)
+	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = "true"))
 	bool ControlledByGamepad = false;
 
 #pragma endregion
