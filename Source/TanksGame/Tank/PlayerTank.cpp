@@ -1,31 +1,11 @@
 #include "PlayerTank.h"
-#include "RawInput.h"
-#include "RawInputFunctionLibrary.h"
-#include "IInputDeviceModule.h"
-#include "IInputDevice.h"
-#include "GenericPlatform/GenericApplicationMessageHandler.h"
 #include "Kismet/GameplayStatics.h"
 #include "Kismet/KismetMathLibrary.h"
 
 
-APlayerTank::APlayerTank() 
-{
-	
-	FCoreDelegates::OnControllerConnectionChange.AddUObject(this, &APlayerTank::ListenForControllerChange);
-}
-
 void APlayerTank::BeginPlay() 
 {
 	Super::BeginPlay();
-
-	IRawInput* RawInput = static_cast<IRawInput*>(static_cast<FRawInputPlugin*>(&FRawInputPlugin::Get())->GetRawInputDevice().Get());
-
-	if (RawInput != nullptr) {
-
-		RawInput->QueryConnectedDevices();
-
-		OnControllerConnection(false);
-	}
 
 	PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 	if (PlayerController == nullptr) {
@@ -239,14 +219,5 @@ void APlayerTank::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 
 int APlayerTank::GetRemainingProjectileCount() {
 	return MaxProjectileCount - ProjectileCount;
-}
-
-void APlayerTank::ListenForControllerChange(bool isConnected, FPlatformUserId UserId, int32 userId) 
-{
-	IRawInput* RawInput = static_cast<IRawInput*>(static_cast<FRawInputPlugin*>(&FRawInputPlugin::Get())->GetRawInputDevice().Get());
-
-	RawInput->QueryConnectedDevices();
-
-	OnControllerConnection(isConnected);
 }
 

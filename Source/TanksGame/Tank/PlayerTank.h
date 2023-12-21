@@ -24,18 +24,12 @@ class TANKSGAME_API APlayerTank : public ATank
 #pragma region Methods
 public:
 	// Called every frame
-	APlayerTank();
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	int GetRemainingProjectileCount() override;
-
-	void ListenForControllerChange(bool isConnected, FPlatformUserId UserId, int32 userId);
-
-	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Controller Events") 
-	void OnControllerConnection(bool IsConnected);
 
 protected:
 	// Called when the game starts or when spawned

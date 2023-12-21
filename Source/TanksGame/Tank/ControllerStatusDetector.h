@@ -23,9 +23,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	void ListenForControllerChange(bool isConnected, FPlatformUserId UserId, int32 userId);
+	void ListenForControllerChange(EInputDeviceConnectionState connectionState, FPlatformUserId userID, FInputDeviceId inputDeviceID);
 
 	UFUNCTION(BlueprintCallable, BlueprintImplementableEvent, Category = "Controller Events")
-	void OnControllerConnection(bool IsConnected);
+	void OnControllerConnection(EInputDeviceConnectionState connectionState, FPlatformUserId userID, FInputDeviceId inputDeviceID);
 
 };

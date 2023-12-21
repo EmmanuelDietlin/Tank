@@ -6,6 +6,7 @@
 #include "RawInputFunctionLibrary.h"
 #include "IInputDeviceModule.h"
 #include "IInputDevice.h"
+#include "GenericPlatform/GenericPlatformInputDeviceMapper.h"
 #include "GenericPlatform/GenericApplicationMessageHandler.h"
 
 // Sets default values
@@ -13,7 +14,7 @@ AControllerStatusDetector::AControllerStatusDetector()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	FCoreDelegates::OnControllerConnectionChange.AddUObject(this, &AControllerStatusDetector::ListenForControllerChange);
+	IPlatformInputDeviceMapper::Get().GetOnInputDeviceConnectionChange().AddUObject(this, &AControllerStatusDetector::ListenForControllerChange);
 
 }
 
@@ -26,8 +27,6 @@ void AControllerStatusDetector::BeginPlay()
 	if (RawInput != nullptr) {
 
 		RawInput->QueryConnectedDevices();
-
-		OnControllerConnection(false);
 	}
 	
 }
@@ -39,12 +38,12 @@ void AControllerStatusDetector::Tick(float DeltaTime)
 
 }
 
-void AControllerStatusDetector::ListenForControllerChange(bool isConnected, FPlatformUserId UserId, int32 userId)
+void AControllerStatusDetector::ListenForControllerChange(EInputDeviceConnectionState connectionState, FPlatformUserId userID, FInputDeviceId inputDeviceID)
 {
 	IRawInput* RawInput = static_cast<IRawInput*>(static_cast<FRawInputPlugin*>(&FRawInputPlugin::Get())->GetRawInputDevice().Get());
 
 	RawInput->QueryConnectedDevices();
 
-	OnControllerConnection(isConnected);
+	OnControllerConnection(connectionState, userID, inputDeviceID);
 }
 
